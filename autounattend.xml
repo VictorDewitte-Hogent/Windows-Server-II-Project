@@ -56,7 +56,7 @@ Notes: Enter your comments here...
 </ImageInstall>
 <UserData>
 <AcceptEula>true</AcceptEula>
-<FullName></FullName>
+<FullName>Admin</FullName>
 <Organization>Organization</Organization>
 <ProductKey>
 <Key>N2KJX-J94YW-TQVFB-DG9YT-724CC</Key>
@@ -72,7 +72,7 @@ Notes: Enter your comments here...
 <SystemLocale>en-US</SystemLocale>
 <UILanguage>en-US</UILanguage>
 <UILanguageFallback>en-US</UILanguageFallback>
-<UserLocale>en-AU</UserLocale>
+<UserLocale>nl-BE</UserLocale>
 </component>
 </settings>
 <settings pass="offlineServicing">
@@ -87,11 +87,11 @@ Notes: Enter your comments here...
 </settings>
 <settings pass="specialize">
 <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-<InputLocale>0c09:00000409</InputLocale>
-<SystemLocale>en-AU</SystemLocale>
-<UILanguage>en-AU</UILanguage>
-<UILanguageFallback>en-AU</UILanguageFallback>
-<UserLocale>en-AU</UserLocale>
+<InputLocale>0409:00000409</InputLocale>
+<SystemLocale>nl-BE</SystemLocale>
+<UILanguage>nl-BE</UILanguage>
+<UILanguageFallback>nl-BE</UILanguageFallback>
+<UserLocale>nl-BE</UserLocale>
 </component>
 <component name="Microsoft-Windows-Security-SPP-UX" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <SkipAutoActivation>true</SkipAutoActivation>
@@ -112,7 +112,7 @@ Notes: Enter your comments here...
 <PlainText>true</PlainText>
 </Password>
 <Enabled>false</Enabled>
-<Username></Username>
+<Username>Admin</Username>
 </AutoLogon>
 <OOBE>
 <HideEULAPage>true</HideEULAPage>
@@ -128,7 +128,7 @@ Notes: Enter your comments here...
 <RegisteredOrganization>Organization</RegisteredOrganization>
 <RegisteredOwner>Owner</RegisteredOwner>
 <DisableAutoDaylightTimeSet>false</DisableAutoDaylightTimeSet>
-<TimeZone>AUS Eastern Standard Time</TimeZone>
+<TimeZone>Romance Standard Time</TimeZone>
 <UserAccounts>
 <AdministratorPassword>
 <Value></Value>
@@ -136,10 +136,10 @@ Notes: Enter your comments here...
 </AdministratorPassword>
 <LocalAccounts>
 <LocalAccount wcm:action="add">
-<Description></Description>
-<DisplayName></DisplayName>
+<Description>Admin</Description>
+<DisplayName>Admin</DisplayName>
 <Group>Administrators</Group>
-<Name></Name>
+<Name>Admin</Name>
 </LocalAccount>
 </LocalAccounts>
 </UserAccounts>
