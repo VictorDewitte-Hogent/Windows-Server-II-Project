@@ -49,3 +49,6 @@ Windows installation image index. (default: 1)
 
 --post-install-template=file
 The post installation script template. (default: IMachine::OSTypeId dependent)
+
+
+https://docs.oracle.com/en/virtualization/virtualbox/6.0/user/vboxmanage-unattended.html
