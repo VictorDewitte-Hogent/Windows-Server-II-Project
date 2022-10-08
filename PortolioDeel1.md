@@ -8,3 +8,17 @@ switch when u can route when u must
 - Exchange zonder gui, Imap voor ms mail , 4 cores, 10gb ram, min 30+gb hard disk
 - IIS server zonder gui, 1 core, 2gb ram. security appart.
 
+## DomeinController-Server
+
+Op de domeincontroller server met een gui zullen volgende services draaien:
+ - AD DS 
+ - DNS
+ - DHCP
+ - CA
+ - Router role met NAT
+
+De server zal beschikken over 2 cores met 4gb ram.
+
+De server zal een aparte service account hebben voor elke applicatie die op de server draait. De service accounts zullen een random password hebben. 
+ 
+
