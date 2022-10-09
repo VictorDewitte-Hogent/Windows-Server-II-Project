@@ -81,22 +81,23 @@ function Create-VM
 }
 
 function Install-DC1 {
-    VBoxManage unattended install "DC" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions  --image-index=2 --start-vm 
+    VBoxManage unattended install "DC" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions  --image-index=2 --start-vm=gui 
+    #--post-install-command "powershell -ExecutionPolicy Bypass -File C:\Users\Administrator\Desktop\Scripts\DC1.ps1" 
 }
 function Install-SQL {
-    VBoxManage unattended install "SQL" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm -headless
+    VBoxManage unattended install "SQL" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=headless
 }
 function Install-Exchange {
-    VBoxManage unattended install "Exchange" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm -headless   
+    VBoxManage unattended install "Exchange" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=headless   
 }
 function Install-IIS {
-    VBoxManage unattended install "IIS" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm -headless
+    VBoxManage unattended install "IIS" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=headless
 }
-function install-Management {
-    VBoxManage unattended install "Management" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm -headless
+function Install-Management {
+    VBoxManage unattended install "Management" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=2 --start-vm=gui
 }
-function install-Host {
-    VBoxManage unattended install "Host" --iso "$PathISO2" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm -headless
+function Install-Host {
+    VBoxManage unattended install "Host" --iso "$PathISO2" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=gui
 }
 
 function Show-Menu
@@ -109,10 +110,11 @@ function Show-Menu
     
     Write-Host "1: De nodige VM's aanmaken en configureren"
     Write-Host "2: Installeren van DC"
-    Write-Host "3: Installeren van 2e"
-    write-host "4: Installeren van 3e"
-    Write-Host "5: Installeren van 4e"
-    Write-Host "6: Installeren van 5e"
+    Write-Host "3: Installeren van SQL"
+    write-host "4: Installeren van Exchange"
+    Write-Host "5: Installeren van IIS"
+    Write-Host "6: Installeren van Management"
+    Write-Host "7: Installeren van De Host"
     Write-Host "Q: Press 'Q' to quit."
 
 
@@ -122,31 +124,72 @@ function Show-Menu
     switch ($selection)
     {
         '1' {
-            'You chose option #1'
+            '####################
+
+    Alle VMs aanmaken
+            
+######################'
+            Start-Sleep -Seconds 5
             Create-all-VM 
             Show-Menu
         } '2' {
-            'You chose option #2'
+            '####################
+
+    DC Installeren
+            
+######################'
+            Start-Sleep -Seconds 5
             Install-DC1
             Show-Menu
         } '3' {
-            'You chose option #3'
+            '####################
+
+    SQL Installeren
+            
+#####################'
+            Start-Sleep -Seconds 5
+            Install-SQL
             Show-Menu
         } '4' {
-            'You chose option #4'
+            '####################
+
+    Exchange Installeren
+            
+######################'
+            Start-Sleep -Seconds 5
+            Install-Exchange
             Show-Menu
         } '5' {
-            'You chose option #5'
+            '####################
+
+    IIS Installeren
+            
+######################'
+            Start-Sleep -Seconds 5
+            Install-IIS
             Show-Menu
         } '6' {
-            'You chose option #6'
+            '####################
+
+    Management Installeren
+            
+######################'
+            Start-Sleep -Seconds 5
+            Install-Management
             Show-Menu
-        
-        
+        } '7' {
+            '####################
+
+    Host Installeren
+            
+######################'
+            Start-Sleep -Seconds 5
+            Install-Host
+            Show-Menu    
         } 'q' {
             return
         }
     }
- }
+}
 
  Show-Menu
