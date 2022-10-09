@@ -4,10 +4,14 @@
 ### HIER AANPASSEN  #####
 # Zet hier het pad naar u Windows Server 2019 ISO
 [String]$PathISO="C:\Users\Victor\OneDrive - Hogeschool Gent\Bureaublad\WinServer\en_windows_server_2019_x64_dvd_4cb967d8.iso"
+# Zet hier het pad naar u Windows 10
+[String]$PathISO2="C:\Users\Victor\OneDrive - Hogeschool Gent\Bureaublad\WinServer\SW_DVD9_Win_Pro_10_20H2.10_64BIT_English_Pro_Ent_EDU_N_MLF_X22-76585.ISO"
 
 # Zet hier het pad naar waar u de VM wilt opslaan
 [string]$path1 = "E:\VM's\"
-                
+
+# Zet hier het pad naar waar u de Shared Folder heeft opgeslagen
+[String]$sharedFolder = "E:\SharedFolder"             
 
 #############################
 
@@ -31,6 +35,7 @@
 
  }
 
+
 function Create-VM
 {
     param(
@@ -48,35 +53,50 @@ function Create-VM
 
     try{
         #VBoxManage createvm --name "Test"--ostype "Windows2019"  --basefolder "E:\VM's\Test\" --group TestGroup --register
-        VBoxManage createvm --name "$Name"--ostype "Windows2019_64"  --basefolder "$path1" --groups $Group --register
+        if($name -match "Host"){
+            $ostype = "Windows10_64"
+        }
+        else{
+            $ostype = "Windows2019_64"
+        }
+        VBoxManage createvm --name "$Name"--ostype "$ostype"  --basefolder "$path1" --groups $Group --register
+
         VBoxManage createhd --filename "$path1$Group\$Name\$Name.vdi" --size $Hdd
         VBoxManage storagectl $Name --name "SATA Controller" --add sata --controller IntelAhci
         VBoxManage storageattach $Name --storagectl "SATA Controller" --port 0 --device 0 --type hdd --medium "$path1$Group\$Name\$Name.vdi"
-        if($name == "DC"){
-            VBoxManage modifyvm $Name --memory $Mem --vram 128 --cpus $Cpu --nic1 nat --nic2 intnet --audio none --boot1 dvd --boot2 disk --boot3 none --boot4 none }
+
+        VBoxManage sharedfolder add $Name --name shr --hostpath $sharedFolder --automount
+   
+        if($name -match "DC"){
+            VBoxManage modifyvm $Name --memory $Mem --vram 128 --cpus $Cpu --nic1 nat --nic2 intnet --audio none --boot1 disk --boot2 dvd --boot3 none --boot4 none }
         else{
             VBoxManage modifyvm $Name --memory $Mem --vram 128 --cpus $Cpu --nic1 intnet --audio none --boot1 disk --boot2 dvd --boot3 none --boot4 none }
         }
        
 
         
-    #catch []
-    #{
-        #Write-Host "VM already exists"
-    #}
-    catch [System.Management.Automation.CommandNotFoundException]
-        {Write-Host "!!!!!!!!!!
-        
-        
-VBoxManage Commands zijn nie ingesteld
-        
-        
-!!!!!!!!!!!!!!!!!!" -ForegroundColor Red }
+    catch [NativeCommandError]
+        { }
 
 }
 
 function Install-DC1 {
-    VBoxManage unattended install "DC" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels"  --image-index=2 --start-vm 
+    VBoxManage unattended install "DC" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions  --image-index=2 --start-vm 
+}
+function Install-SQL {
+    VBoxManage unattended install "SQL" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm -headless
+}
+function Install-Exchange {
+    VBoxManage unattended install "Exchange" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm -headless   
+}
+function Install-IIS {
+    VBoxManage unattended install "IIS" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm -headless
+}
+function install-Management {
+    VBoxManage unattended install "Management" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm -headless
+}
+function install-Host {
+    VBoxManage unattended install "Host" --iso "$PathISO2" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm -headless
 }
 
 function Show-Menu
@@ -104,7 +124,7 @@ function Show-Menu
         '1' {
             'You chose option #1'
             Create-all-VM 
-            #Show-Menu
+            Show-Menu
         } '2' {
             'You chose option #2'
             Install-DC1
@@ -114,10 +134,13 @@ function Show-Menu
             Show-Menu
         } '4' {
             'You chose option #4'
+            Show-Menu
         } '5' {
             'You chose option #5'
+            Show-Menu
         } '6' {
             'You chose option #6'
+            Show-Menu
         
         
         } 'q' {
@@ -125,3 +148,5 @@ function Show-Menu
         }
     }
  }
+
+ Show-Menu
