@@ -26,11 +26,11 @@
  function Create-all-VM
  {
 
-    Create-Vm -Name "DC" -Mem 4096 -Cpu 2 -Hdd 25000 -Gui $false
+    Create-Vm -Name "DC" -Mem 4096 -Cpu 2 -Hdd 25000 -Gui $true
     Create-Vm -Name "SQL" -Mem 4096 -Cpu 1 -Hdd 8000 -Gui $false
     Create-Vm -Name "Exchange" -Mem 10240 -Cpu 4 -Hdd 30000 -Gui $false
     Create-Vm -Name "IIS" -Mem 2048 -Cpu 1 -Hdd 8000 -Gui $false
-    create-Vm -Name "Management" -Mem 4096 -Cpu 2 -Hdd 80000 -Gui $true
+    #create-Vm -Name "Management" -Mem 4096 -Cpu 2 -Hdd 80000 -Gui $true
     Create-Vm -Name "Host" -Mem 4096 -Cpu 2 -Hdd 80000 -Gui $true
 
  }
@@ -93,9 +93,9 @@ function Install-Exchange {
 function Install-IIS {
     VBoxManage unattended install "IIS" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=headless
 }
-function Install-Management {
-    VBoxManage unattended install "Management" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=2 --start-vm=gui
-}
+#function Install-Management {
+   # VBoxManage unattended install "Management" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=2 --start-vm=gui
+#}
 function Install-Host {
     VBoxManage unattended install "Host" --iso "$PathISO2" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=gui
 }
@@ -113,8 +113,8 @@ function Show-Menu
     Write-Host "3: Installeren van SQL"
     write-host "4: Installeren van Exchange"
     Write-Host "5: Installeren van IIS"
-    Write-Host "6: Installeren van Management"
-    Write-Host "7: Installeren van De Host"
+    #Write-Host "6: Installeren van Management"
+    Write-Host "6: Installeren van De Host"
     Write-Host "Q: Press 'Q' to quit."
 
 
@@ -168,16 +168,16 @@ function Show-Menu
             Start-Sleep -Seconds 5
             Install-IIS
             Show-Menu
-        } '6' {
-            '####################
+#        } '6' {
+#            '####################
 
-    Management Installeren
+#    Management Installeren
             
 ######################'
-            Start-Sleep -Seconds 5
-            Install-Management
-            Show-Menu
-        } '7' {
+#            Start-Sleep -Seconds 5
+#            Install-Management
+#            Show-Menu
+        } '6' {
             '####################
 
     Host Installeren
