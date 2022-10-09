@@ -1,12 +1,11 @@
 # Portfolio Windows Server II: Victor Dewitte
 
-switch when u can route when u must
 
-- Management server met gui, 2 cores, 4gb ram. 2Max users at one perticular time. 
-- DC server zonder gui, Aparte service accounts voor elke applicatie, Randomize passwords functie, Service accounts backup applicatie, DNS, DHCP, CA. 2 cores, 4gb ram, Router role op de dc met NAT.
-- Sql server zonder gui, Windows security only, 1 core 4gb ram , min 6gb hard disk
-- Exchange zonder gui, Imap voor ms mail , 4 cores, 10gb ram, min 30+gb hard disk
-- IIS server zonder gui, 1 core, 2gb ram. security appart.
+
+## Inleiding
+
+In de opstelling wordt er gebruik gemaakt van 4 virtuele machine's dit elk met een versie van windows server 2019. De DC server is de enige server met een grafische interface. De andere server's hebben geen grafische interface. De DC server is de enige server die gebruikt wordt voor het beheer van de andere server's. 
+
 
 ## DomeinController-Server
 
@@ -17,8 +16,13 @@ Op de domeincontroller server met een gui zullen volgende services draaien:
  - CA
  - Router role met NAT
 
-De server zal beschikken over 2 cores met 4gb ram.
+De server zal beschikken over 2 cores met 4gb ram en de windows server 2019 64bit operating system zal er op geinstalleerd zijn met de desktop expierence (dus met een grafische interface). De server zal ook beschikken over een 35gb virtuele harde schijf bevatten. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine.
+De server heeft ook 2 network interface's:
+- 1 voor het interne netwerk, die een statisch ip adres heeft in de range van het interne netwerk : 192.168.22.1
+- 1 voor de NAT verbinding die heel de omgeving zal voorzien van een verbinding met het internet. Deze interface heeft een dynamisch ip adres die hij krijgt van de DHCP server van Virtualbox.
 
-De server zal een aparte service account hebben voor elke applicatie die op de server draait. De service accounts zullen een random password hebben. 
+De Active Directory Domain Services (AD DS) zal geinstalleerd zijn op de DomeinController. Deze zal de domeinnaam "WS2-2223-Victor.hogent" hebben. De Active Directory zal een apart service account voorzien voor elke applicatie die op de server's draait. De service accounts zullen een random password hebben. Ook zal het de nodige accounts hebben voor gewone gebruikers en mensen die mogelijkse toegang hebben tot de sql server maar geen data kunnen aanpassen. Met andere woorden de correcte Orginaizational Units en Group Policies zullen aanwezig zijn binnen het domein.
+
+De DNS Server zal automatisch...
  
 
