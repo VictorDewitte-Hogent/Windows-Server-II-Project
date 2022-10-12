@@ -4,7 +4,18 @@
 
 ## Inleiding
 
-In de opstelling wordt er gebruik gemaakt van 4 virtuele machine's dit elk met een versie van windows server 2019. De DC server is de enige server met een grafische interface. De andere server's hebben geen grafische interface. De DC server is de enige server die gebruikt wordt voor het beheer van de andere server's. 
+In de opstelling wordt er gebruik gemaakt van 4 virtuele machine's dit elk met een versie van windows server 2019. De DC server is de enige server met een grafische interface. De andere server's hebben geen grafische interface. De DC server is de enige server die gebruikt wordt voor het beheer van de andere server's.
+
+|          | IP-Adressen  |
+|----------|--------------|
+| DC       | 192.168.22.1 |
+| IIS      | 192.168.22.2 |
+| SQL      | 192.168.22.3 |
+| Exchange | 192.168.22.4 |
+| Client   | DHCP         |
+
+
+ <img src="Portfolio\IMG\Screenshot 2022-10-12 153105.png" alt="Screenshot 2022-10-12 153105"  />
 
 
 ## DomeinController-Server
@@ -46,5 +57,14 @@ De Exchange-Server zal enkel een command line interface hebben. Deze zal beschik
 
 Aan de hand van de verkregen ISO van exchange zal de mailserver geinstalleerd worden. Deze zal een aparte service account hebben. Deze service account zal enkel de nodige rechten hebben om de mailserver te kunnen beheren. De mailserver zal ook een aparte gebruiker hebben die enkel de nodige rechten heeft om de mailserver te kunnen gebruiken.
 
+Het zou moeten mogelijk zijn om de management webpagina van de mailserver te kunnen bezoeken via de browser op de domeincontroller die wel beschikt over een gui. De webpagina zal enkel toegankelijk zijn voor de gebruikers die toegang hebben tot de mailserver.
 
+## IIS-Server
 
+De IIS Server met andere woorden de webserver van de organisatie zal enkel een command line interface hebben. Deze zal beschikken over 1 cores met 2gb ram. De server zal ook beschikken over een 15gb virtuele harde schijf bevatten. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De complete domeinnaam van deze server zal `web.ws2-2223-victor.hogent` of `www.ws2-2223-victor.hogent` zijn. 
+
+De website van het domein zal bereikbaar zijn over heel het internal network maar enkel met https. De IIS role staat op een aparte server omdat alle users kunnen verbinden met deze server. Om het risico's op problemen door aanvallen of inbraak op de website te verminderen zal de IIS service op een aparte server geinstalleerd staan.
+
+## Client
+
+De client zal een gewone installatie van windows 10 zijn die een user heeft in het domein waarmee hij kan inloggen, mogelijks zijn er ook shared folder die toegankelijk zijn voor de user. De client zal ook een virtuele harde schijf hebben van 45gb. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De Client krijgt een ip address van de DHCP server.
