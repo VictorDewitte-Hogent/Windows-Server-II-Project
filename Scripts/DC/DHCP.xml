@@ -1,0 +1,92 @@
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04">
+  <Obj RefId="0">
+    <TN RefId="0">
+      <T>System.Collections.ObjectModel.Collection`1[[System.Management.Automation.PSObject, System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35]]</T>
+      <T>System.Object</T>
+    </TN>
+    <LST>
+      <Obj RefId="1">
+        <TN RefId="1">
+          <T>Microsoft.Management.Infrastructure.CimInstance#ROOT/Microsoft/Windows/ServerManager/ServerComponent_DHCP</T>
+          <T>Microsoft.Management.Infrastructure.CimInstance#ROOT/Microsoft/Windows/ServerManager/MSFT_ServerManagerServerComponentDescriptor</T>
+          <T>Microsoft.Management.Infrastructure.CimInstance#ServerComponent_DHCP</T>
+          <T>Microsoft.Management.Infrastructure.CimInstance#MSFT_ServerManagerServerComponentDescriptor</T>
+          <T>Microsoft.Management.Infrastructure.CimInstance</T>
+          <T>System.Object</T>
+        </TN>
+        <ToString>ServerComponent_DHCP</ToString>
+        <Props>
+          <S N="PSComputerName">DC</S>
+        </Props>
+        <MS>
+          <I32 N="NumericId">12</I32>
+          <Obj N="__ClassMetadata" RefId="2">
+            <TN RefId="2">
+              <T>System.Collections.ArrayList</T>
+              <T>System.Object</T>
+            </TN>
+            <LST>
+              <Obj RefId="3">
+                <MS>
+                  <S N="ClassName">MSFT_ServerManagerServerComponentDescriptor</S>
+                  <S N="Namespace">ROOT/Microsoft/Windows/ServerManager</S>
+                  <S N="ServerName">DC</S>
+                  <I32 N="Hash">1572102856</I32>
+                  <S N="MiXml">&lt;CLASS NAME="MSFT_ServerManagerServerComponentDescriptor"&gt;&lt;QUALIFIER NAME="dynamic" TYPE="boolean"&gt;&lt;VALUE&gt;true&lt;/VALUE&gt;&lt;/QUALIFIER&gt;&lt;QUALIFIER NAME="locale" TYPE="sint32" TOSUBCLASS="false"&gt;&lt;VALUE&gt;1033&lt;/VALUE&gt;&lt;/QUALIFIER&gt;&lt;QUALIFIER NAME="provider" TYPE="string"&gt;&lt;VALUE&gt;deploymentprovider&lt;/VALUE&gt;&lt;/QUALIFIER&gt;&lt;/CLASS&gt;</S>
+                </MS>
+              </Obj>
+              <Obj RefId="4">
+                <MS>
+                  <S N="ClassName">ServerComponent_DHCP</S>
+                  <S N="Namespace">ROOT/Microsoft/Windows/ServerManager</S>
+                  <S N="ServerName">DC</S>
+                  <I32 N="Hash">1571884456</I32>
+                  <S N="MiXml">&lt;CLASS NAME="ServerComponent_DHCP" SUPERCLASS="MSFT_ServerManagerServerComponentDescriptor"&gt;&lt;QUALIFIER NAME="dynamic" TYPE="boolean"&gt;&lt;VALUE&gt;true&lt;/VALUE&gt;&lt;/QUALIFIER&gt;&lt;QUALIFIER NAME="provider" TYPE="string"&gt;&lt;VALUE&gt;deploymentprovider&lt;/VALUE&gt;&lt;/QUALIFIER&gt;&lt;QUALIFIER NAME="ClassVersion" TYPE="string"&gt;&lt;VALUE&gt;8.0.0&lt;/VALUE&gt;&lt;/QUALIFIER&gt;&lt;QUALIFIER NAME="DisplayName" TYPE="string" TRANSLATABLE="true"&gt;&lt;VALUE&gt;DHCP&lt;/VALUE&gt;&lt;/QUALIFIER&gt;&lt;/CLASS&gt;</S>
+                </MS>
+              </Obj>
+            </LST>
+          </Obj>
+        </MS>
+      </Obj>
+      <Obj RefId="5">
+        <TN RefId="3">
+          <T>Microsoft.Management.Infrastructure.CimInstance#ROOT/Microsoft/Windows/ServerManager/ServerComponent_RSAT_DHCP</T>
+          <T>Microsoft.Management.Infrastructure.CimInstance#ROOT/Microsoft/Windows/ServerManager/MSFT_ServerManagerServerComponentDescriptor</T>
+          <T>Microsoft.Management.Infrastructure.CimInstance#ServerComponent_RSAT_DHCP</T>
+          <T>Microsoft.Management.Infrastructure.CimInstance#MSFT_ServerManagerServerComponentDescriptor</T>
+          <T>Microsoft.Management.Infrastructure.CimInstance</T>
+          <T>System.Object</T>
+        </TN>
+        <ToString>ServerComponent_RSAT_DHCP</ToString>
+        <Props>
+          <S N="PSComputerName">DC</S>
+        </Props>
+        <MS>
+          <I32 N="NumericId">300</I32>
+          <Obj N="__ClassMetadata" RefId="6">
+            <TNRef RefId="2" />
+            <LST>
+              <Obj RefId="7">
+                <MS>
+                  <S N="ClassName">MSFT_ServerManagerServerComponentDescriptor</S>
+                  <S N="Namespace">ROOT/Microsoft/Windows/ServerManager</S>
+                  <S N="ServerName">DC</S>
+                  <I32 N="Hash">1572102856</I32>
+                </MS>
+              </Obj>
+              <Obj RefId="8">
+                <MS>
+                  <S N="ClassName">ServerComponent_RSAT_DHCP</S>
+                  <S N="Namespace">ROOT/Microsoft/Windows/ServerManager</S>
+                  <S N="ServerName">DC</S>
+                  <I32 N="Hash">1570785544</I32>
+                  <S N="MiXml">&lt;CLASS NAME="ServerComponent_RSAT_DHCP" SUPERCLASS="MSFT_ServerManagerServerComponentDescriptor"&gt;&lt;QUALIFIER NAME="dynamic" TYPE="boolean"&gt;&lt;VALUE&gt;true&lt;/VALUE&gt;&lt;/QUALIFIER&gt;&lt;QUALIFIER NAME="provider" TYPE="string"&gt;&lt;VALUE&gt;deploymentprovider&lt;/VALUE&gt;&lt;/QUALIFIER&gt;&lt;QUALIFIER NAME="ClassVersion" TYPE="string"&gt;&lt;VALUE&gt;8.0.0&lt;/VALUE&gt;&lt;/QUALIFIER&gt;&lt;QUALIFIER NAME="DisplayName" TYPE="string" TRANSLATABLE="true"&gt;&lt;VALUE&gt;RSAT-DHCP&lt;/VALUE&gt;&lt;/QUALIFIER&gt;&lt;/CLASS&gt;</S>
+                </MS>
+              </Obj>
+            </LST>
+          </Obj>
+        </MS>
+      </Obj>
+    </LST>
+  </Obj>
+</Objs>

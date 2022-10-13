@@ -31,3 +31,26 @@ tzutil /s "Romance Standard Time"
 #          REBOOT            #
 ##############################
 shutdown /r -t 0
+
+
+
+
+
+#
+# Windows PowerShell script for AD DS Deployment
+#
+
+Import-Module ADDSDeployment
+Install-ADDSForest `
+-CreateDnsDelegation:$false `
+-DatabasePath "C:\Windows\NTDS" `
+-DomainMode "WinThreshold" `
+-DomainName "WS2-2223-victor.hogent" `
+-DomainNetbiosName "WS2-2223-VICTOR" `
+-ForestMode "WinThreshold" `
+-InstallDns:$true `
+-LogPath "C:\Windows\NTDS" `
+-NoRebootOnCompletion:$false `
+-SysvolPath "C:\Windows\SYSVOL" `
+-Force:$true
+

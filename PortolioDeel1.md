@@ -50,6 +50,9 @@ Op deze server zal enkel de SQL server draaien. De installatie is te vinden op d
 
 Er zal een database aangemaakt worden met de naam `WS2-2223-Victor`. Deze zal een aparte service account hebben. Deze service account zal enkel de nodige rechten hebben om de database te kunnen beheren. De database zal ook een aparte gebruiker hebben die enkel de nodige rechten heeft om de database te kunnen gebruiken. 
 
+De secundaire DNS zal op deze server komen om te functioneren als redundante DNS. Deze zal dus ook de nodige forward en reverse lookup zones voorzien. Secundaire servers kunnen ook worden gebruikt om DNS-queryverkeer te ontlasten in delen van het netwerk waar een zone zwaar wordt bevraagd. Als een primaire server niet beschikbaar is, kan een secundaire server bovendien dezelfde naamomzettingsservice bieden voor de gehoste zone terwijl de primaire server beschikbaar is.
+
+Als u een secundaire server toevoegt, is een ontwerpoptie om de server zo dicht mogelijk bij clients te plaatsen die veel behoefte hebben aan hostnaamomzetting. U kunt ook overwegen om secundaire servers op externe subnetten te plaatsen die zijn verbonden via langzamere of onbetrouwbare WAN-koppelingen.
 
 ## Exchange-Server
 
@@ -68,3 +71,8 @@ De website van het domein zal bereikbaar zijn over heel het internal network maa
 ## Client
 
 De client zal een gewone installatie van windows 10 zijn die een user heeft in het domein waarmee hij kan inloggen, mogelijks zijn er ook shared folder die toegankelijk zijn voor de user. De client zal ook een virtuele harde schijf hebben van 45gb. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De Client krijgt een ip address van de DHCP server.
+
+alles van stappen dak doe  noteren hier
+
+
+(virtual iso/usb met scripts op om zo te laten runnen.)
