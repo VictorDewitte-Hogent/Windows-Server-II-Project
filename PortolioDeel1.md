@@ -75,4 +75,4 @@ De client zal een gewone installatie van windows 10 zijn die een user heeft in h
 alles van stappen dak doe  noteren hier
 
 
-(virtual iso/usb met scripts op om zo te laten runnen.)
+(virtual iso/usb met scripts op om zo te laten runnen.) test
