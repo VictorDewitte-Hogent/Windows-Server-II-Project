@@ -3,9 +3,9 @@
 
 ### HIER AANPASSEN  #####
 # Zet hier het pad naar u Windows Server 2019 ISO
-[String]$PathISO="C:\Users\Victor\OneDrive - Hogeschool Gent\Bureaublad\WinServer\en_windows_server_2019_x64_dvd_4cb967d8.iso"
+[String]$PathISO="E:\WindowsServer2\en_windows_server_2019_x64_dvd_4cb967d8.iso"
 # Zet hier het pad naar u Windows 10
-[String]$PathISO2="C:\Users\Victor\OneDrive - Hogeschool Gent\Bureaublad\WinServer\SW_DVD9_Win_Pro_10_20H2.10_64BIT_English_Pro_Ent_EDU_N_MLF_X22-76585.ISO"
+[String]$PathISO2="E:\WindowsServer2\SW_DVD9_Win_Pro_10_20H2.10_64BIT_English_Pro_Ent_EDU_N_MLF_X22-76585.ISO"
 
 # Zet hier het pad naar waar u de VM wilt opslaan
 [string]$path1 = "E:\VM's\"
