@@ -399,8 +399,8 @@ code {
 </tbody>
 </table>
 <figure>
-<img src="Portfolio\IMG\Screenshot 2022-10-12 153105.png" alt="Screenshot 2022-10-12 153105" style="width:100%" />
-<figcaption align = "center"><b>Fig.1 - Grafische weergave van de opstelling van de servers</b></figcaption>
+<img src="Portfolio\IMG\Screenshot 2022-10-12 153105.png" alt="Screenshot 2022-10-12 153105" style="width:200" />
+<figcaption align = "left"><b>Fig.1 - Grafische weergave van de opstelling van de servers</b></figcaption>
 </figure>
 <h2 id="domeincontroller-server">DomeinController-Server</h2>
 <p>Op de domeincontroller server met een gui zullen volgende services draaien:</p>
@@ -426,42 +426,42 @@ Er kan een DNS Delagation gemaakt worden op de DNS server, dit wordt in dit geva
 De database folder heeft een paar belangrijke bestanden. De database gebruikt de ESE(Extensible Storage Engine), dit is een database engine die gebruikt wordt door de AD DS database.<br>
 De SYSVOL is een gedeelde map waarin de serverkopie van de openbare bestanden van het domein wordt opgeslagen die moeten worden gedeeld voor algemene toegang en replicatie in een domein.</p>
 <figure>
-<img src="Portfolio\IMG\SysVol.png" alt="Trulli" style="width:100%">
-<figcaption align = "center"><b>Fig.2 - C:\Windows\ folder met de SYSVOL folder in</b></figcaption>
+<img src="Portfolio\IMG\SysVol.png" alt="Trulli" style="width:200">
+<figcaption align = "left"><b>Fig.2 - C:\Windows\ folder met de SYSVOL folder in</b></figcaption>
 </figure>
 <p>Er is binnen de Active Directory 2 admin accounts voorzien met volle rechten voor alles te doen binnen het AD. Ze kunnen alles op elke pc/server binnen het domein aanpassen. Er is het standaard Administrator account en een account voor mezelf.</p>
 <figure>
-<img src="Portfolio\IMG\Admins.png" alt="Trulli" style="width:100%">
-<figcaption align = "center"><b>Fig.3 - Admin Accounts voorzien in de AD</b></figcaption>
+<img src="Portfolio\IMG\Admins.png" alt="Trulli" style="width:200">
+<figcaption align = "left"><b>Fig.3 - Admin Accounts voorzien in de AD</b></figcaption>
 </figure>
 <figure>
-<img src="Portfolio\IMG\Admins.png" alt="Trulli" style="width:100%">
-<figcaption align = "center"><b>Fig.4 - De rechten van het "Victor Dewitte" account</b></figcaption>
+<img src="Portfolio\IMG\Admins.png" alt="Trulli" style="width:200">
+<figcaption align = "left"><b>Fig.4 - De rechten van het "Victor Dewitte" account</b></figcaption>
 </figure>
 <p>Daarnaast zijn er de gewone gebruikers. Die toegang hebben tot het gebruiken van de gewone host computers. Ze kunnen daar de basis taken op uitvoeren. Ze hebben geen toegang tot het inloggen in de servers.</p>
 <figure>
-<img src="Portfolio\IMG\Users.png" alt="Trulli" style="width:100%">
-<figcaption align = "center"><b>Fig.5 - Users in de AD</b></figcaption>
+<img src="Portfolio\IMG\Users.png" alt="Trulli" style="width:200">
+<figcaption align = "left"><b>Fig.5 - Users in de AD</b></figcaption>
 </figure>
 <p>Sommige user's zullen extra rechten hebben om toegang te hebben tot de SQL Server. Deze zullen lid zijn van de SQL_Users groep. Deze groep zal ook de rechten hebben om de SQL Server te gebruiken maar niet beheren.</p>
 <p>De Active Directory zal een apart service account voorzien voor elke applicatie die op de server's draait. Dit zal gedaan worden aan de hand van groepen die in de AD die toegevoegd worden tot de Admin users van de machine van wie ze admin rechten nodig hebben. De groepen zullen de naam van de applicatie hebben. Binnen de groepen kunnen er dan gemakkelijk gebruikers toegevoegd worden en verwijderd worden naar gelang er mensen komen en gaan die de rechten nodig hebben op die machines.</p>
 <figure>
-<img src="Portfolio\IMG\ServiceAccounts.png" alt="Trulli" style="width:100%">
-<figcaption align = "center"><b>Fig.6 - Service Accounts OU</b></figcaption>
+<img src="Portfolio\IMG\ServiceAccounts.png" alt="Trulli" style="width:200">
+<figcaption align = "left"><b>Fig.6 - Service Accounts OU</b></figcaption>
 </figure>
 <figure>
-<img src="Portfolio\IMG\HostAdmin.png" alt="Trulli" style="width:100%">
-<figcaption align = "center"><b>Fig.7 - Groep van de Host Admins</b></figcaption>
+<img src="Portfolio\IMG\HostAdmin.png" alt="Trulli" style="width:200">
+<figcaption align = "left"><b>Fig.7 - Groep van de Host Admins</b></figcaption>
 </figure>
 <p>De DNS Server zal automatisch geconfigureerd worden door de AD DS, de nodige ldap records zullen dus automatisch gegenereerd worden. De DNS server zal ook de nodige forward lookup zones voorzien. Samen met de nodige AD DS records zullen er ook wat A records in de forward lookup zone zitten naar de servers, samen met een paar CNAME records en een MX record voor de Mail Server.</p>
 <figure>
-<img src="Portfolio\IMG\ForwardZone.png" alt="Trulli" style="width:100%">
-<figcaption align = "center"><b>Fig.8 - DNS Server forward lookup zone</b></figcaption>
+<img src="Portfolio\IMG\ForwardZone.png" alt="Trulli" style="width:200">
+<figcaption align = "left"><b>Fig.8 - DNS Server forward lookup zone</b></figcaption>
 </figure>
 <p>De DNS server zal ook de nodige reverse lookup records voorzien die automatisch kunnen gegenereerd worden door het aanmaken van de A records.</p>
 <figure>
-<img src="Portfolio\IMG\ReverseZone.png" alt="Trulli" style="width:100%">
-<figcaption align = "center"><b>Fig.9 - DNS Server PTR records</b></figcaption>
+<img src="Portfolio\IMG\ReverseZone.png" alt="Trulli" style="width:200">
+<figcaption align = "left"><b>Fig.9 - DNS Server PTR records</b></figcaption>
 </figure>
 <p>De forwarders van de DNS server zullen ingesteld worden op die van op een hele hoop forwarders. Dit indien er een van de DNS servers niet bereikbaar is, zal de DNS server automatisch een andere forwarder gebruiken. Onder andere gebruik ik de forwarders van Google en Cloudflare. Ook worden er aan de hand van testen om het uur de configuratie van de DNS server getest.</p>
 <table>
@@ -473,8 +473,8 @@ De SYSVOL is een gedeelde map waarin de serverkopie van de openbare bestanden va
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center"><img src="Portfolio\IMG\Forwarders.png" alt="Trulli" style="width:100%" /><figcaption align = "center"><b>Fig.10 - DNS Server Forwarders</b></figcaption></td>
-<td style="text-align:center"><img src="Portfolio\IMG\DNS Monitoring.png" alt="Trulli" style="width:100%" /><figcaption align = "center"><b>Fig.11 - DNS Server Monitoring</b></figcaption></td>
+<td style="text-align:center"><img src="Portfolio\IMG\Forwarders.png" alt="Trulli" style="width:200" /><figcaption align = "center"><b>Fig.10 - DNS Server Forwarders</b></figcaption></td>
+<td style="text-align:center"><img src="Portfolio\IMG\DNS Monitoring.png" alt="Trulli" style="width:200" /><figcaption align = "center"><b>Fig.11 - DNS Server Monitoring</b></figcaption></td>
 </tr>
 </tbody>
 </table>
