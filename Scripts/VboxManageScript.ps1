@@ -1,17 +1,17 @@
-#$env:PATH = $env:PATH + ";C:\Program Files\Oracle\VirtualBox"
+$env:PATH = $env:PATH + ";C:\Program Files\Oracle\VirtualBox"
 
 
 ### HIER AANPASSEN  #####
 # Zet hier het pad naar u Windows Server 2019 ISO
-[String]$PathISO="E:\WindowsServer2\en_windows_server_2019_x64_dvd_4cb967d8.iso"
+[String]$PathISO="C:\Users\VictorDewitte\Desktop\WindowsServer2\en_windows_server_2019_x64_dvd_4cb967d8.iso"
 # Zet hier het pad naar u Windows 10
-[String]$PathISO2="E:\WindowsServer2\SW_DVD9_Win_Pro_10_20H2.10_64BIT_English_Pro_Ent_EDU_N_MLF_X22-76585.ISO"
+[String]$PathISO2="C:\Users\VictorDewitte\Desktop\WindowsServer2\SW_DVD9_Win_Pro_10_20H2.10_64BIT_English_Pro_Ent_EDU_N_MLF_X22-76585.ISO"
 
 # Zet hier het pad naar waar u de VM wilt opslaan
-[string]$path1 = "E:\VM's\"
+[string]$path1 = "C:\Users\VictorDewitte\VMs\"
 
 # Zet hier het pad naar waar u de Shared Folder heeft opgeslagen
-[String]$sharedFolder = "E:\SharedFolder"             
+[String]$sharedFolder = "C:\Users\VictorDewitte\Documents\SharedFolder"             
 
 #############################
 
@@ -27,7 +27,7 @@
  {
 
     Create-Vm -Name "DC" -Mem 4096 -Cpu 2 -Hdd 25000 -Gui $true
-    Create-Vm -Name "SQL" -Mem 4096 -Cpu 1 -Hdd 8000 -Gui $false
+    Create-Vm -Name "SQL" -Mem 4096 -Cpu 1 -Hdd 25000 -Gui $false
     Create-Vm -Name "Exchange" -Mem 10240 -Cpu 4 -Hdd 30000 -Gui $false
     Create-Vm -Name "IIS" -Mem 2048 -Cpu 1 -Hdd 8000 -Gui $false
     #create-Vm -Name "Management" -Mem 4096 -Cpu 2 -Hdd 80000 -Gui $true
@@ -140,7 +140,7 @@ function Show-Menu
 ######################'
             Start-Sleep -Seconds 5
             Install-DC1
-            Show-Menu
+            #Show-Menu
         } '3' {
             '####################
 
@@ -192,4 +192,7 @@ function Show-Menu
     }
 }
 
- Show-Menu
+Show-Menu
+
+
+#netsh interface ip set address "Ethernet" static 192.168.22.3 255.255.255.0 192.168.22.1

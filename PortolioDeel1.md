@@ -14,9 +14,12 @@ In de opstelling wordt er gebruik gemaakt van 4 virtuele machine's dit elk met e
 | Exchange | 192.168.22.4 |
 | Client   | DHCP         |
 
+<figure>
+<img src="Portfolio\IMG\Screenshot 2022-10-12 153105.png" alt="Screenshot 2022-10-12 153105" style="width:100%" />
+<figcaption align = "center"><b>Fig.1 - Grafische weergave van de opstelling van de servers</b></figcaption>
+</figure>
 
- <img src="Portfolio\IMG\Screenshot 2022-10-12 153105.png" alt="Screenshot 2022-10-12 153105"  />
-
+ 
 
 ## DomeinController-Server
 
@@ -32,9 +35,79 @@ De server heeft ook 2 network interface's:
 - 1 voor het interne netwerk, die een statisch ip adres heeft in de range van het interne netwerk : 192.168.22.1
 - 1 voor de NAT verbinding die heel de omgeving zal voorzien van een verbinding met het internet. Deze interface heeft een dynamisch ip adres die hij krijgt van de DHCP server van Virtualbox.
 
-De Active Directory Domain Services (AD DS) zal geinstalleerd zijn op de DomeinController. Deze zal de domeinnaam `"WS2-2223-Victor.hogent"` hebben. De Active Directory zal een apart service account voorzien voor elke applicatie die op de server's draait. De service accounts zullen een random password hebben. Ook zal het de nodige accounts hebben voor gewone gebruikers en mensen die mogelijkse toegang hebben tot de sql server maar geen data kunnen aanpassen. Met andere woorden de correcte Orginaizational Units en Group Policies zullen aanwezig zijn binnen het domein.
+De Active Directory Domain Services (AD DS) zal geinstalleerd zijn op de DomeinController. Deze zal de domeinnaam `"WS2-2223-Victor.hogent"` hebben. Na de installatie zal in de post deployment volgende stappen uitgevoerd worden:
+    - We checken de de config van de server met ADprep /forestprep en ADprep /domainprep zodat de server klaar is om een domein te hosten.
+    - Na dit wordt het forest en domain functioneel level ingesteld op windows server 2016. Ook worden de capabilities van de AD DS geselecteerd. Deze zijn GC ( Global Catalog) en DNS (Domain Name System). Ook wordt er een DSRM (Directory Services Restore Mode) password ingesteld.
+Er kan een DNS Delagation gemaakt worden op de DNS server, dit wordt in dit geval niet gedaan.
 
-De DNS Server zal automatisch geconfigureerd worden door de AD DS, de nodige ldap records zullen dus automatisch gegenereerd worden. De DNS server zal ook de nodige reverse lookup zones voorzien. De DNS server zal ook de nodige forward lookup zones voorzien. De forwarders van de dns server zullen ingesteld worden op die van google.
+De NetBIOS naam wordt ingesteld op `WS2-2223-VICTOR`. NetBIOS-naam is een naam van 16 bytes voor een netwerkservice of -functie op een computer met Microsoft Windows Server. NetBIOS-namen zijn een gebruiksvriendelijkere manier om computers in een netwerk te identificeren dan netwerknummers en worden gebruikt door NetBIOS-compatibele services en toepassingen.
+
+Er is ook een directory pad nodig voor de AD DS database, log files en de SYSVOL. Die wordt op de standaard paden van `C:\Windows\NTDS` en `C:\Windows\SYSVOL` ingesteld. 
+    De database folder heeft een paar belangrijke bestanden. De database gebruikt de ESE(Extensible Storage Engine), dit is een database engine die gebruikt wordt door de AD DS database.     
+De SYSVOL is een gedeelde map waarin de serverkopie van de openbare bestanden van het domein wordt opgeslagen die moeten worden gedeeld voor algemene toegang en replicatie in een domein.
+<figure>
+<img src="Portfolio\IMG\SysVol.png" alt="Trulli" style="width:100%">
+<figcaption align = "center"><b>Fig.2 - C:\Windows\ folder met de SYSVOL folder in</b></figcaption>
+</figure>
+
+Er is binnen de Active Directory 2 admin accounts voorzien met volle rechten voor alles te doen binnen het AD. Ze kunnen alles op elke pc/server binnen het domein aanpassen. Er is het standaard Administrator account en een account voor mezelf.
+<figure>
+<img src="Portfolio\IMG\Admins.png" alt="Trulli" style="width:100%">
+<figcaption align = "center"><b>Fig.3 - Admin Accounts voorzien in de AD</b></figcaption>
+</figure>
+<figure>
+<img src="Portfolio\IMG\Admins.png" alt="Trulli" style="width:100%">
+<figcaption align = "center"><b>Fig.4 - De rechten van het "Victor Dewitte" account</b></figcaption>
+</figure>
+
+
+Daarnaast zijn er de gewone gebruikers. Die toegang hebben tot het gebruiken van de gewone host computers. Ze kunnen daar de basis taken op uitvoeren. Ze hebben geen toegang tot het inloggen in de servers. 
+
+<figure>
+<img src="Portfolio\IMG\Users.png" alt="Trulli" style="width:100%">
+<figcaption align = "center"><b>Fig.5 - Users in de AD</b></figcaption>
+</figure>
+
+Sommige user's zullen extra rechten hebben om toegang te hebben tot de SQL Server. Deze zullen lid zijn van de SQL_Users groep. Deze groep zal ook de rechten hebben om de SQL Server te gebruiken maar niet beheren.
+
+
+De Active Directory zal een apart service account voorzien voor elke applicatie die op de server's draait. Dit zal gedaan worden aan de hand van groepen die in de AD die toegevoegd worden tot de Admin users van de machine van wie ze admin rechten nodig hebben. De groepen zullen de naam van de applicatie hebben. Binnen de groepen kunnen er dan gemakkelijk gebruikers toegevoegd worden en verwijderd worden naar gelang er mensen komen en gaan die de rechten nodig hebben op die machines.
+
+<figure>
+<img src="Portfolio\IMG\ServiceAccounts.png" alt="Trulli" style="width:100%">
+<figcaption align = "center"><b>Fig.6 - Service Accounts OU</b></figcaption>
+</figure>
+<figure>
+<img src="Portfolio\IMG\HostAdmin.png" alt="Trulli" style="width:100%">
+<figcaption align = "center"><b>Fig.7 - Groep van de Host Admins</b></figcaption>
+</figure>
+
+
+
+De DNS Server zal automatisch geconfigureerd worden door de AD DS, de nodige ldap records zullen dus automatisch gegenereerd worden. De DNS server zal ook de nodige forward lookup zones voorzien. Samen met de nodige AD DS records zullen er ook wat A records in de forward lookup zone zitten naar de servers, samen met een paar CNAME records en een MX record voor de Mail Server.
+
+<figure>
+<img src="Portfolio\IMG\ForwardZone.png" alt="Trulli" style="width:100%">
+<figcaption align = "center"><b>Fig.8 - DNS Server forward lookup zone</b></figcaption>
+</figure>
+
+
+De DNS server zal ook de nodige reverse lookup records voorzien die automatisch kunnen gegenereerd worden door het aanmaken van de A records.
+<figure>
+<img src="Portfolio\IMG\ReverseZone.png" alt="Trulli" style="width:100%">
+<figcaption align = "center"><b>Fig.9 - DNS Server PTR records</b></figcaption>
+</figure>
+
+De forwarders van de DNS server zullen ingesteld worden op die van op een hele hoop forwarders. Dit indien er een van de DNS servers niet bereikbaar is, zal de DNS server automatisch een andere forwarder gebruiken. Onder andere gebruik ik de forwarders van Google en Cloudflare. Ook worden er aan de hand van testen om het uur de configuratie van de DNS server getest.
+
+Forwarders          |  Monitoring
+:-------------------------:|:-------------------------:
+<img src="Portfolio\IMG\Forwarders.png" alt="Trulli" style="width:100%" /><figcaption align = "center"><b>Fig.10 - DNS Server Forwarders</b></figcaption>|  <img src="Portfolio\IMG\DNS Monitoring.png" alt="Trulli" style="width:100%" /><figcaption align = "center"><b>Fig.11 - DNS Server Monitoring</b></figcaption>
+
+
+<!--  DHCP BIJREGELEN ENZO EN FGOTO -->
+
+
 
 De DHCP role zal ook op deze server staan. Deze zal ip addressen uitdelen aan alle clients in de opstelling. De servers krijgen allemaal een statisch addres. De clients binnen het netwerk krijgen een dynamisch address in de range van 192.168.22.101-150/24. De DHCP server zal ook de nodige dns servers en default gateways meegeven aan de clients.
 
@@ -76,3 +149,5 @@ alles van stappen dak doe  noteren hier
 
 
 (virtual iso/usb met scripts op om zo te laten runnen.) test
+
+New-SmbShare -Path C:\Users\Administrator.WS2-2223-VICTOR\Documents\ -Name "Shared Folder2" -FullAccess  "WS2-2223-VICTOR\Victor","WS2-2223-VICTOR\Administrator"
