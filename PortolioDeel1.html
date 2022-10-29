@@ -451,9 +451,34 @@ De SYSVOL is een gedeelde map waarin de serverkopie van de openbare bestanden va
 </figure>
 <figure>
 <img src="Portfolio\IMG\HostAdmin.png" alt="Trulli" style="width:100%">
-<figcaption align = "center"><b>Fig.6 - Groep van de Host Admins</b></figcaption>
+<figcaption align = "center"><b>Fig.7 - Groep van de Host Admins</b></figcaption>
 </figure>
-<p>De DNS Server zal automatisch geconfigureerd worden door de AD DS, de nodige ldap records zullen dus automatisch gegenereerd worden. De DNS server zal ook de nodige reverse lookup zones voorzien. De DNS server zal ook de nodige forward lookup zones voorzien. De forwarders van de dns server zullen ingesteld worden op die van google.</p>
+<p>De DNS Server zal automatisch geconfigureerd worden door de AD DS, de nodige ldap records zullen dus automatisch gegenereerd worden. De DNS server zal ook de nodige forward lookup zones voorzien. Samen met de nodige AD DS records zullen er ook wat A records in de forward lookup zone zitten naar de servers, samen met een paar CNAME records en een MX record voor de Mail Server.</p>
+<figure>
+<img src="Portfolio\IMG\ForwardZone.png" alt="Trulli" style="width:100%">
+<figcaption align = "center"><b>Fig.8 - DNS Server forward lookup zone</b></figcaption>
+</figure>
+<p>De DNS server zal ook de nodige reverse lookup records voorzien die automatisch kunnen gegenereerd worden door het aanmaken van de A records.</p>
+<figure>
+<img src="Portfolio\IMG\ReverseZone.png" alt="Trulli" style="width:100%">
+<figcaption align = "center"><b>Fig.9 - DNS Server PTR records</b></figcaption>
+</figure>
+<p>De forwarders van de DNS server zullen ingesteld worden op die van op een hele hoop forwarders. Dit indien er een van de DNS servers niet bereikbaar is, zal de DNS server automatisch een andere forwarder gebruiken. Onder andere gebruik ik de forwarders van Google en Cloudflare. Ook worden er aan de hand van testen om het uur de configuratie van de DNS server getest.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Forwarders</th>
+<th style="text-align:center">Monitoring</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="Portfolio\IMG\Forwarders.png" alt="Trulli" style="width:100%" /><figcaption align = "center"><b>Fig.10 - DNS Server Forwarders</b></figcaption></td>
+<td style="text-align:center"><img src="Portfolio\IMG\DNS Monitoring.png" alt="Trulli" style="width:100%" /><figcaption align = "center"><b>Fig.11 - DNS Server Monitoring</b></figcaption></td>
+</tr>
+</tbody>
+</table>
+<!--  DHCP BIJREGELEN ENZO EN FGOTO -->
 <p>De DHCP role zal ook op deze server staan. Deze zal ip addressen uitdelen aan alle clients in de opstelling. De servers krijgen allemaal een statisch addres. De clients binnen het netwerk krijgen een dynamisch address in de range van 192.168.22.101-150/24. De DHCP server zal ook de nodige dns servers en default gateways meegeven aan de clients.</p>
 <p>De Certification Authority (CA) zal digitale certificaten geven aan alle devices. Deze gaan helpen bij het veilig communiceren tussen de verschillende devices. De CA zal ook een certificaat geven aan de DC server zodat deze kan communiceren met de andere server's, ook zal de CA een certificaat geven aan de IIS server om de website te kunnen hosten met HTTPS.</p>
 <p>De Routing and remote access role zal ook geinstalleerd zijn op deze server. Deze zal de internet voorzien voor de hele omgeving. Het zal van de NAT adapter die aan de DC hangt network address translation doen met het internal network. Zo zullen alle server's die enkel een internal network adapter hebben ook voorzien zijn van een veilige verbinding met het internet.</p>
