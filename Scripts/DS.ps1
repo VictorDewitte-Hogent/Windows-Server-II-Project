@@ -1,0 +1,1 @@
+New-ADComputer -Name "Host" -AccountPassword (ConvertTo-SecureString -String 'Temp' -AsPlainText -Force)
