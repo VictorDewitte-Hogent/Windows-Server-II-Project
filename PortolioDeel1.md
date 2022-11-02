@@ -184,7 +184,19 @@ Het zou moeten mogelijk zijn om de management webpagina van de mailserver te kun
 
 ## IIS-Server
 
-De IIS Server met andere woorden de webserver van de organisatie zal enkel een command line interface hebben. Deze zal beschikken over 1 cores met 2gb ram. De server zal ook beschikken over een 15gb virtuele harde schijf bevatten. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De complete domeinnaam van deze server zal `web.ws2-2223-victor.hogent` of `www.ws2-2223-victor.hogent` zijn. 
+De IIS Server met andere woorden de webserver van de organisatie zal enkel een command line interface hebben. Deze zal beschikken over 1 cores met 2gb ram. De server zal ook beschikken over een 15gb virtuele harde schijf bevatten. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De complete domeinnaam van deze server zal `web.ws2-2223-victor.hogent` ,`www.ws2-2223-victor.hogent` of gwn `ws2-2223-victor.hogent` zijn. Mijn portfolio wordt afgebeeld op de site als demo.
+
+<figure>
+<img src="Portfolio\IMG\link1.png" alt="Trulli" style="width:100%">
+<img src="Portfolio\IMG\link2.png" alt="Trulli" style="width:100%">
+<img src="Portfolio\IMG\link3.png" alt="Trulli" style="width:100%">
+<img src="Portfolio\IMG\link4.png" alt="Trulli" style="width:100%">
+
+<figcaption align = "center"><b>Fig. - Website is bereikbaar via deze links</b></figcaption>
+</figure>
+
+Certificaat moet nog inorde gebracht worden met de CA Server...
+
 
 De website van het domein zal bereikbaar zijn over heel het internal network maar enkel met https. De IIS role staat op een aparte server omdat alle users kunnen verbinden met deze server. Om het risico's op problemen door aanvallen of inbraak op de website te verminderen zal de IIS service op een aparte server geinstalleerd staan.
 
