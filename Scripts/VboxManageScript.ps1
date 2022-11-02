@@ -89,24 +89,25 @@ function Create-VM
 
 }
 
+#Kan dit efficiënter maken maar nog nie direct zin in
 function Install-DC1 {
-    VBoxManage unattended install "DC" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions  --image-index=2 --start-vm=gui --post-install-command=$postCommand
+    VBoxManage unattended install "DC" --iso "$PathISO" --user "Administrator" --password $password --full-user-name $username  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions  --image-index=2 --start-vm=gui --post-install-command=$postCommand
     #--post-install-command "powershell -ExecutionPolicy Bypass -File C:\Users\Administrator\Desktop\Scripts\DC1.ps1" 
 }
 function Install-SQL {
-    VBoxManage unattended install "SQL" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=headless --post-install-command=$postCommand
+    VBoxManage unattended install "SQL" --iso "$PathISO" --user $username --password $password --full-user-name $username  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=headless --post-install-command=$postCommand
 }
 function Install-Exchange {
-    VBoxManage unattended install "Exchange" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=headless  --post-install-command=$postCommand 
+    VBoxManage unattended install "Exchange" --iso "$PathISO" --user $username --password $password --full-user-name $username  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=headless  --post-install-command=$postCommand 
 }
 function Install-IIS {
-    VBoxManage unattended install "IIS" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=headless --post-install-command=$postCommand
+    VBoxManage unattended install "IIS" --iso "$PathISO" --user $username --password $password --full-user-name $username  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=headless --post-install-command=$postCommand
 }
 #function Install-Management {
-   # VBoxManage unattended install "Management" --iso "$PathISO" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=2 --start-vm=gui
+   # VBoxManage unattended install "Management" --iso "$PathISO" --user $username --password $password --full-user-name $username  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=2 --start-vm=gui
 #}
 function Install-Host {
-    VBoxManage unattended install "Host" --iso "$PathISO2" --user "Administrator" --password "P@ssw0rd" --full-user-name "Administrator"  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=gui --post-install-command=$postCommand
+    VBoxManage unattended install "Host" --iso "$PathISO2" --user $username --password $password --full-user-name $username  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=gui --post-install-command=$postCommand
 }
 
 ########################################

@@ -105,25 +105,72 @@ Forwarders          |  Monitoring
 <img src="Portfolio\IMG\Forwarders.png" alt="Trulli" style="width:100%" /><figcaption align = "center"><b>Fig.10 - DNS Server Forwarders</b></figcaption>|  <img src="Portfolio\IMG\DNS Monitoring.png" alt="Trulli" style="width:100%" /><figcaption align = "center"><b>Fig.11 - DNS Server Monitoring</b></figcaption>
 
 
-<!--  DHCP BIJREGELEN ENZO EN FGOTO -->
 
 
 
-De DHCP role zal ook op deze server staan. Deze zal ip addressen uitdelen aan alle clients in de opstelling. De servers krijgen allemaal een statisch addres. De clients binnen het netwerk krijgen een dynamisch address in de range van 192.168.22.101-150/24. De DHCP server zal ook de nodige dns servers en default gateways meegeven aan de clients.
+### DHCP 
+
+De DHCP role zal ook op deze server staan. Deze zal ip addressen uitdelen aan alle clients in de opstelling. De servers krijgen allemaal een statisch addres. Er is dus maar 1 DHCP scope nodig. In dit geval is dit dus de UserScope.
+
+<figure>
+<img src="Portfolio\IMG\Scope.png" alt="Trulli" style="width:100%">
+<figcaption align = "center"><b>Fig.12 - UserScope in de DHCP Server</b></figcaption>
+</figure>
+
+De clients binnen het netwerk krijgen een dynamisch address in de range van 192.168.22.101-150/24. De Users krijgen enkel een IPv4 addres toegewezen. 
+
+<figure>
+<img src="Portfolio\IMG\ScopeProperties.png" alt="Trulli" style="width:50%" class="center">
+<figcaption align = "center"><b>Fig.13 - UserScope's IP range</b></figcaption>
+</figure>
+
+De DHCP server zal ook de nodige dns servers en default gateways meegeven aan de clients.
+<figure>
+<img src="Portfolio\IMG\ScopeOptions.png" alt="Trulli" style="width:100%">
+<figcaption align = "center"><b>Fig.14 - DNS Server en Default gateway in Scope Options</b></figcaption>
+</figure>
+<figure>
+<img src="Portfolio\IMG\Leases.png" alt="Trulli" style="width:100%">
+<figcaption align = "center"><b>Fig.15 - Host die een lease heeft bij de DHCP server</b></figcaption>
+</figure>
+
+
+### CA
 
 De Certification Authority (CA) zal digitale certificaten geven aan alle devices. Deze gaan helpen bij het veilig communiceren tussen de verschillende devices. De CA zal ook een certificaat geven aan de DC server zodat deze kan communiceren met de andere server's, ook zal de CA een certificaat geven aan de IIS server om de website te kunnen hosten met HTTPS. 
 
-De Routing and remote access role zal ook geinstalleerd zijn op deze server. Deze zal de internet voorzien voor de hele omgeving. Het zal van de NAT adapter die aan de DC hangt network address translation doen met het internal network. Zo zullen alle server's die enkel een internal network adapter hebben ook voorzien zijn van een veilige verbinding met het internet. 
+Via de Certificate Authority webclient kunnen er certificaten aan de CA aangevraagd worden om gegenereerd te worden door de Server.
+<figure> 
+<img src="Portfolio\IMG\CASrv.png" alt="Trulli" style="width:100%">
+<figcaption align = "center"><b>Fig.16 - Certificate Authority WebClient</b></figcaption>
+</figure>
+<!--  Verder werken aan de CA   -->
+
+### Routing
+
+De Routing and remote access role zal ook geinstalleerd zijn op deze server. Deze zal de internet voorzien voor de hele omgeving. Het zal van de NAT adapter die aan de DC hangt network address translation doen met het internal network. Zo zullen alle server's die enkel een internal network adapter hebben ook voorzien zijn van een veilige verbinding met het internet. Er wordt aan Network address translation gedaan tussen de 2 interfaces.
+
+<figure>
+<img src="Portfolio\IMG\NAT.png" alt="Trulli" style="width:100%">
+<figcaption align = "center"><b>Fig.16 - Certificate Authority WebClient</b></figcaption>
+</figure>
 
 ## SQL-Server
 
-De SQL-Server zal enkel een command line interface hebben. Deze zal beschikken over 1 cores met 4gb ram en de windows server 2019 64 bit operating systeem zal er op geinstalleerd zijn. De server zal ook beschikken over een 15gb virtuele harde schijf bevatten. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De complete domeinnaam van deze server zal `sql.ws2-2223-victor.hogent` zijn.
+De SQL-Server zal enkel een command line interface hebben. Deze zal beschikken over 1 cores met 4gb ram en de windows server 2019 64 bit operating systeem zal er op geinstalleerd zijn. De server zal ook beschikken over een 15gb virtuele harde schijf bevatten. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De complete domeinnaam van deze server zal `SQL.ws2-2223-victor.hogent` zijn.
 
 Op deze server zal enkel de SQL server draaien. De installatie is te vinden op de Website van Microsoft. Deze wordt gescheiden van andere roles zodat mensen met toegang tot deze server enkel deze server kunnen beheren zonder impact te hebben op andere services. 
 
 Er zal een database aangemaakt worden met de naam `WS2-2223-Victor`. Deze zal een aparte service account hebben. Deze service account zal enkel de nodige rechten hebben om de database te kunnen beheren. De database zal ook een aparte gebruiker hebben die enkel de nodige rechten heeft om de database te kunnen gebruiken. 
 
 De secundaire DNS zal op deze server komen om te functioneren als redundante DNS. Deze zal dus ook de nodige forward en reverse lookup zones voorzien. Secundaire servers kunnen ook worden gebruikt om DNS-queryverkeer te ontlasten in delen van het netwerk waar een zone zwaar wordt bevraagd. Als een primaire server niet beschikbaar is, kan een secundaire server bovendien dezelfde naamomzettingsservice bieden voor de gehoste zone terwijl de primaire server beschikbaar is.
+
+De secundaire DNS bevat een secundaire zone voor de forward lookup zone en ook een secundaire zone voor de reverse lookup zone. Deze zal dus ook de nodige forward en reverse records kopieeren vanaf de primairy DNS via een zone transfer voorzien.
+
+Forward lookup zone         |  Reverse lookup zone
+:-------------------------:|:-------------------------:
+<img src="Portfolio\IMG\SecondaryForward.png" alt="Trulli" style="width:100%" /><figcaption align = "center"><b>Fig.10 - Secondary DNS Server Forward Lookup zone</b></figcaption>|  <img src="Portfolio\IMG\SecondaryReverse.png" alt="Trulli" style="width:100%" /><figcaption align = "center"><b>Fig.11 - Secondary DNS Server reverse Lookup zone</b></figcaption>
+
 
 Als u een secundaire server toevoegt, is een ontwerpoptie om de server zo dicht mogelijk bij clients te plaatsen die veel behoefte hebben aan hostnaamomzetting. U kunt ook overwegen om secundaire servers op externe subnetten te plaatsen die zijn verbonden via langzamere of onbetrouwbare WAN-koppelingen.
 
@@ -143,11 +190,25 @@ De website van het domein zal bereikbaar zijn over heel het internal network maa
 
 ## Client
 
-De client zal een gewone installatie van windows 10 zijn die een user heeft in het domein waarmee hij kan inloggen, mogelijks zijn er ook shared folder die toegankelijk zijn voor de user. De client zal ook een virtuele harde schijf hebben van 45gb. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De Client krijgt een ip address van de DHCP server.
-
-alles van stappen dak doe  noteren hier
+De client zal een gewone installatie van windows 10 zijn die een user heeft in het domein waarmee hij kan inloggen. De client zal ook een virtuele harde schijf hebben van 45gb. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De Client krijgt een ip address van de DHCP server.
 
 
-(virtual iso/usb met scripts op om zo te laten runnen.) test
+Google chrome en SQL server management studio worden geinstalleerd op de server. Deze zijn nodig om de website te kunnen bezoeken en de database te kunnen beheren. Ook is er een browser nodig om mails te versturen met de online mail client.
+<figure>
+<img src="Portfolio\IMG\AppsHost.png" alt="Trulli" style="width:200" height="500" class="center"> 
+<figcaption align = "center"><b>Fig. - Apps op de host device</b></figcaption>
+</figure>
 
-New-SmbShare -Path C:\Users\Administrator.WS2-2223-VICTOR\Documents\ -Name "Shared Folder2" -FullAccess  "WS2-2223-VICTOR\Victor","WS2-2223-VICTOR\Administrator"
+<style>
+    .center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+</style>
+
+
+
+
+<!--New-SmbShare -Path C:\Users\Administrator.WS2-2223-VICTOR\Documents\ -Name "Shared Folder2" -FullAccess  "WS2-2223-VICTOR\Victor","WS2-2223-VICTOR\Administrator"
