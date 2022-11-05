@@ -6,14 +6,23 @@
 
 In de opstelling wordt er gebruik gemaakt van 4 virtuele machine's dit elk met een versie van windows server 2019. De DC server is de enige server met een grafische interface. De andere server's hebben geen grafische interface. De DC server is de enige server die gebruikt wordt voor het beheer van de andere server's.
 
-|          | IP-Adressen  |
-|----------|--------------|
-| DC       | 192.168.22.1 |
-| IIS      | 192.168.22.2 |
-| SQL      | 192.168.22.3 |
-| Exchange | 192.168.22.4 |
-| Client   | DHCP         |
+|          | IP-Adressen  | Fully Quantified Domain name |
+|----------|--------------|------------------------------|
+| DC       | 192.168.22.1 | dc.ws2-2223-victor.hogent    |
+| IIS      | 192.168.22.2 | www.ws2-2223-victor.hogent   |
+| SQL      | 192.168.22.3 | sql.ws2-2223-victor.hogent   |
+| Exchange | 192.168.22.4 | mail.ws2-2223-victor.hogent  |
+| Client   | DHCP         |   /                          |
 
+|          | Vcpu | Vram        | Vdisksize*   | Network kaarten|
+|----------|------|-------------|--------------|----------------|
+| DC       |  2   | 2 gigabyte  | 30 gigabyte  | 2 (nat, Internal network) |
+| IIS      |  1   | 1 gigabyte  | 10 gigabyte  | 1 (Internal network) |
+| SQL      |  1   | 2 gigabyte  | 20 gigabyte  | 1   |
+| Exchange |  4   | 8 gigabyte  | 60 gigabyte  | 1   |
+| Client   |  2   | 2 gigabyte  | 20           | 1   |
+
+*Dynamicly allocated ( Neemt enkel de plaats in dat de schijf nodig heeft op host machine )
 <figure>
 <img src="Portfolio\IMG\Screenshot 2022-10-12 153105.png" alt="Screenshot 2022-10-12 153105" style="width:100%" />
 <figcaption align = "center"><b>Fig.1 - Grafische weergave van de opstelling van de servers</b></figcaption>
@@ -24,11 +33,13 @@ In de opstelling wordt er gebruik gemaakt van 4 virtuele machine's dit elk met e
 ## DomeinController-Server
 
 Op de domeincontroller server met een gui zullen volgende services draaien:
- - AD DS 
- - DNS
- - DHCP
- - CA
- - Router role met NAT
+ - AD DS (Active Directory Domain Services)
+ - DNS  (Domain Name Server)
+ - DHCP (Dynamic Host Configuration Protocol Server)
+ - CA   (Certificate Authority Server)
+ - Router role met NAT  (Network Address Translation)
+
+
 
 De server zal beschikken over 2 cores met 4gb ram en de windows server 2019 64 bit operating systeem zal er op geinstalleerd zijn met de desktop expierence (dus met een grafische interface). De server zal ook beschikken over een 35gb virtuele harde schijf bevatten. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De complete domeinnaam van deze server zal `dc.ws2-2223-victor.hogent` zijn.
 De server heeft ook 2 network interface's:
@@ -157,6 +168,8 @@ De Routing and remote access role zal ook geinstalleerd zijn op deze server. Dez
 
 ## SQL-Server
 
+
+
 De SQL-Server zal enkel een command line interface hebben. Deze zal beschikken over 1 cores met 4gb ram en de windows server 2019 64 bit operating systeem zal er op geinstalleerd zijn. De server zal ook beschikken over een 15gb virtuele harde schijf bevatten. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De complete domeinnaam van deze server zal `SQL.ws2-2223-victor.hogent` zijn.
 
 Op deze server zal enkel de SQL server draaien. De installatie is te vinden op de Website van Microsoft. Deze wordt gescheiden van andere roles zodat mensen met toegang tot deze server enkel deze server kunnen beheren zonder impact te hebben op andere services. 
@@ -169,16 +182,21 @@ De secundaire DNS bevat een secundaire zone voor de forward lookup zone en ook e
 
 Forward lookup zone         |  Reverse lookup zone
 :-------------------------:|:-------------------------:
-<img src="Portfolio\IMG\SecondaryForward.png" alt="Trulli" style="width:100%" /><figcaption align = "center"><b>Fig.10 - Secondary DNS Server Forward Lookup zone</b></figcaption>|  <img src="Portfolio\IMG\SecondaryReverse.png" alt="Trulli" style="width:100%" /><figcaption align = "center"><b>Fig.11 - Secondary DNS Server reverse Lookup zone</b></figcaption>
+<img src="Portfolio\IMG\SecondaryForward.png" alt="Trulli" style="width:100%" /><figcaption align = "center"><b>Fig.17 - Secondary DNS Server Forward Lookup zone</b></figcaption>|  <img src="Portfolio\IMG\SecondaryReverse.png" alt="Trulli" style="width:100%" /><figcaption align = "center"><b>Fig.18 - Secondary DNS Server reverse Lookup zone</b></figcaption>
 
 
 Als u een secundaire server toevoegt, is een ontwerpoptie om de server zo dicht mogelijk bij clients te plaatsen die veel behoefte hebben aan hostnaamomzetting. U kunt ook overwegen om secundaire servers op externe subnetten te plaatsen die zijn verbonden via langzamere of onbetrouwbare WAN-koppelingen.
 
 ## Exchange-Server
 
-De Exchange-Server zal enkel een command line interface hebben. Deze zal beschikken over 4 cores met 10gb ram en de windows server 2019 64 bit operating systeem zal er op geinstalleerd zijn. De server zal ook beschikken over een 45gb virtuele harde schijf bevatten. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De complete domeinnaam van deze server zal `exchange.ws2-2223-victor.hogent` zijn.
+De Exchange-Server zal enkel een command line interface hebben. Deze zal beschikken over 4 cores met 10gb ram en de windows server 2019 64 bit operating systeem zal er op geinstalleerd zijn. De server zal ook beschikken over een 45gb virtuele harde schijf bevatten. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De complete domeinnaam van deze server zal `exchange.ws2-2223-victor.hogent` of `mail.ws2-2223-victor.hogent` zijn.
 
-Aan de hand van de verkregen ISO van exchange zal de mailserver geinstalleerd worden. Deze zal een aparte service account hebben. Deze service account zal enkel de nodige rechten hebben om de mailserver te kunnen beheren. De mailserver zal ook een aparte gebruiker hebben die enkel de nodige rechten heeft om de mailserver te kunnen gebruiken.
+<figure>
+<img src="Portfolio\IMG\outlook.png" alt="Trulli" style="width:100%">
+<figcaption align = "center"><b>Fig.19 - Outlook WebClient</b></figcaption>
+</figure>
+
+Aan de hand van de verkregen ISO van exchange zal de mailserver geinstalleerd worden. Dit met een domain admin account die de rechten heeft van `Schema Admin` en `Enterprise Admin`. Deze Server zal een aparte service account hebben. Dit service account zal enkel de nodige rechten hebben om de mailserver te kunnen beheren. Alle gebruikers krijgen een mailbox die gemaakt zal worden door de mailserver admin via het `Admin Center`. Dit is te bereiken via de browser via `https://mail.ws2-2223-victor.hogent/ecp/`.
 
 Het zou moeten mogelijk zijn om de management webpagina van de mailserver te kunnen bezoeken via de browser op de domeincontroller die wel beschikt over een gui. De webpagina zal enkel toegankelijk zijn voor de gebruikers die toegang hebben tot de mailserver.
 
