@@ -168,6 +168,12 @@ De Routing and remote access role zal ook geinstalleerd zijn op deze server. Dez
 
 ## SQL-Server
 
+|  |  Rollen|
+|--|--|
+|  | MS SQL server | 
+|  | Secundaire DNS |
+
+
 
 
 De SQL-Server zal enkel een command line interface hebben. Deze zal beschikken over 1 cores met 4gb ram en de windows server 2019 64 bit operating systeem zal er op geinstalleerd zijn. De server zal ook beschikken over een 15gb virtuele harde schijf bevatten. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De complete domeinnaam van deze server zal `SQL.ws2-2223-victor.hogent` zijn.
@@ -189,6 +195,12 @@ Als u een secundaire server toevoegt, is een ontwerpoptie om de server zo dicht 
 
 ## Exchange-Server
 
+|  |  Rollen|
+|--|--|
+|  | MS Exchange Server | 
+|  | |
+
+
 De Exchange-Server zal enkel een command line interface hebben. Deze zal beschikken over 4 cores met 10gb ram en de windows server 2019 64 bit operating systeem zal er op geinstalleerd zijn. De server zal ook beschikken over een 45gb virtuele harde schijf bevatten. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De complete domeinnaam van deze server zal `exchange.ws2-2223-victor.hogent` of `mail.ws2-2223-victor.hogent` zijn.
 
 <figure>
@@ -198,9 +210,17 @@ De Exchange-Server zal enkel een command line interface hebben. Deze zal beschik
 
 Aan de hand van de verkregen ISO van exchange zal de mailserver geinstalleerd worden. Dit met een domain admin account die de rechten heeft van `Schema Admin` en `Enterprise Admin`. Deze Server zal een aparte service account hebben. Dit service account zal enkel de nodige rechten hebben om de mailserver te kunnen beheren. Alle gebruikers krijgen een mailbox die gemaakt zal worden door de mailserver admin via het `Admin Center`. Dit is te bereiken via de browser via `https://mail.ws2-2223-victor.hogent/ecp/`.
 
-Het zou moeten mogelijk zijn om de management webpagina van de mailserver te kunnen bezoeken via de browser op de domeincontroller die wel beschikt over een gui. De webpagina zal enkel toegankelijk zijn voor de gebruikers die toegang hebben tot de mailserver.
+Het zou moeten mogelijk zijn om de management webpagina van de mailserver te kunnen bezoeken via de browser op de domeincontroller die wel beschikt over een gui. Iedereen die een mailbox heeft kan inloggen op de mail client. Enkel de Admin's en de server admin van de Exchange server kunnen inloggen op de exchange server via de ECP management webpagina.
+
+Certificaten voor de mailserver moeten nog inorde gebracht worden met de CA server...
+
 
 ## IIS-Server
+
+|  |  Rollen|
+|--|--|
+|  | IIS Server (Webserver role) | 
+|  | |
 
 De IIS Server met andere woorden de webserver van de organisatie zal enkel een command line interface hebben. Deze zal beschikken over 1 cores met 2gb ram. De server zal ook beschikken over een 15gb virtuele harde schijf bevatten. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De complete domeinnaam van deze server zal `web.ws2-2223-victor.hogent` ,`www.ws2-2223-victor.hogent` of gwn `ws2-2223-victor.hogent` zijn. Mijn portfolio wordt afgebeeld op de site als demo.
 
@@ -219,6 +239,10 @@ Certificaat moet nog inorde gebracht worden met de CA Server...
 De website van het domein zal bereikbaar zijn over heel het internal network maar enkel met https. De IIS role staat op een aparte server omdat alle users kunnen verbinden met deze server. Om het risico's op problemen door aanvallen of inbraak op de website te verminderen zal de IIS service op een aparte server geinstalleerd staan.
 
 ## Client
+|  |  Geinstalleerde Software|
+|--|--|
+|  | Chrome browser | 
+|  | SQL Server Management Studio|
 
 De client zal een gewone installatie van windows 10 zijn die een user heeft in het domein waarmee hij kan inloggen. De client zal ook een virtuele harde schijf hebben van 45gb. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De Client krijgt een ip address van de DHCP server.
 
