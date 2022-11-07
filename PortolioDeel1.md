@@ -12,24 +12,23 @@ In de opstelling wordt er gebruik gemaakt van 4 virtuele machine's dit elk met e
 | IIS      | 192.168.22.2 | www.ws2-2223-victor.hogent   |
 | SQL      | 192.168.22.3 | sql.ws2-2223-victor.hogent   |
 | Exchange | 192.168.22.4 | mail.ws2-2223-victor.hogent  |
-| Client   | DHCP         |   /                          |
+| Host / Client  | DHCP         |   /                          |
 
-|          | Vcpu | Vram        | Vdisksize*   | Network kaarten|
+|          | Vcpu | Vram        | Vdisksize*  | Network kaarten|
 |----------|------|-------------|--------------|----------------|
 | DC       |  2   | 2 gigabyte  | 30 gigabyte  | 2 (nat, Internal network) |
-| IIS      |  1   | 1 gigabyte  | 10 gigabyte  | 1 (Internal network) |
-| SQL      |  1   | 2 gigabyte  | 20 gigabyte  | 1   |
-| Exchange |  4   | 8 gigabyte  | 60 gigabyte  | 1   |
-| Client   |  2   | 2 gigabyte  | 20           | 1   |
+| IIS      |  1   | 1 gigabyte  | 25 gigabyte  | 1 (Internal network) |
+| SQL      |  1   | 2 gigabyte  | 25 gigabyte  | 1   |
+| Exchange |  4   | 8 gigabyte  | 65 gigabyte  | 1   |
+| Host / Client  |  2   | 2 gigabyte  | 25 gigabyte           | 1   |
 
-*Dynamicly allocated ( Neemt enkel de plaats in dat de schijf nodig heeft op host machine )
 <figure>
-<img src="Portfolio\IMG\Screenshot 2022-10-12 153105.png" alt="Screenshot 2022-10-12 153105" style="width:100%" />
+<img src="Portfolio\IMG\Screenshot 2022-10-12 153105.png" alt="Screenshot 2022-10-12 153105" style="width:100%" style="height:90%" />
 <figcaption align = "center"><b>Fig.1 - Grafische weergave van de opstelling van de servers</b></figcaption>
 </figure>
 
  
-
+*Dynamicly allocated ( Neemt enkel de plaats in dat de schijf nodig heeft op host machine )
 ## DomeinController-Server
 
 Op de domeincontroller server met een gui zullen volgende services draaien:

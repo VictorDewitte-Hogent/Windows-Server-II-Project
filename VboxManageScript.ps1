@@ -19,7 +19,7 @@ $username = "Administrator"
 
 
 
-[string]$scripts = "C:\Users\VictorDewitte\Desktop\WindowsServer2\Windows-Server-II-Project\Scripts\$name.ps1"
+[string]$scripts = "C:\Users\VictorDewitte\Desktop\WindowsServer2\Windows-Server-II-Project\Scripts\"
 #############################
 
 
@@ -118,10 +118,14 @@ function Scripts {
         [String]$scripts ,
         [String]$CompDir
     )
+    #VBoxManage guestcontrol "DC" run --username $username --password $password --exe "C:\\windows\\system32\\WindowsPowerShell\v1.0\powershell.exe" --  powershell.exe /C New-ADComputer -Name $name -AccountPassword (ConvertTo-SecureString -String 'Temp' -AsPlainText -Force)
+
+    #New-ADComputer -Name "Server02" -AccountPassword (ConvertTo-SecureString -String 'Temp' -AsPlainText -Force)
+
 
     vboxmanage guestcontrol $name copyto $scripts $CompDir --username $username --password $password
     VBoxManage guestcontrol $name run --username $username --password $password --exe "C:\\windows\\system32\\WindowsPowerShell\v1.0\powershell.exe" -- powershell.exe /C set-executionpolicy remotesigned
-    VBoxManage guestcontrol $name run --username $username --password $password --exe "C:\\windows\\system32\\WindowsPowerShell\v1.0\powershell.exe" -- powershell.exe /C .\$name.ps1
+    VBoxManage guestcontrol $name run --username $username --password $password --exe "C:\\windows\\system32\\WindowsPowerShell\v1.0\powershell.exe" -- powershell.exe /C $(C:\$name\$name.ps1)
 
     
 }
