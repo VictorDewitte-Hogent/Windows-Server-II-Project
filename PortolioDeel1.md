@@ -162,7 +162,7 @@ De Routing and remote access role zal ook geinstalleerd zijn op deze server. Dez
 
 <figure>
 <img src="Portfolio\IMG\NAT.png" alt="Trulli" style="width:100%">
-<figcaption align = "center"><b>Fig.16 - Certificate Authority WebClient</b></figcaption>
+<figcaption align = "center"><b>Fig.17 - Routing and remote Acces Nat verbinding</b></figcaption>
 </figure>
 
 ## SQL-Server
