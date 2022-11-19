@@ -36,9 +36,9 @@ foreach($user in $users){
     $first = $user.First
     $last = $user.Last
     $path = $user.Path
-    $userPrincipalName = $username + "@thematrix.local"
-    $profilepath = "\\agentsmith\UserProfiles\%username%"
-    $homepath = "\\agentsmith\HomeFolder\$username"
+    $userPrincipalName = $username + "@ws2-2223-victor.hogent"
+    $profilepath = "\\dc\UserProfiles\%username%"
+    $homepath = "\\dc\HomeFolder\$username"
     New-Item -Path "C:\HomeFolder" -Name $username -ItemType "directory"
     New-ADUser -Name "$first $last" -GivenName $first -Surname $last -SamAccountName $username -DisplayName $username -UserPrincipalName $userPrincipalName -ProfilePath $profilepath -HomeDirectory $homepath -HomeDrive H: -Path $path -Accountpassword (ConvertTo-SecureString "Letmein123" -AsPlainText -Force) -Enabled $true
     Write-Host "✅ User $first $last werd aangemaakt!"

@@ -11,7 +11,7 @@ Write-Host @"
 "@
 Start-Sleep 3
 
-# Hostname AD is agentsmith
+# Hostname AD is DC
 Rename-Computer -NewName "DC"
 # Verander IP-adres
 New-NetIPAddress -InterfaceAlias Ethernet -IPAddress 192.168.22.3 
