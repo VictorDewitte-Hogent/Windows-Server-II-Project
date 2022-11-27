@@ -263,6 +263,13 @@ if (Should-Run-Step "D")
         New-ADOrganizationalUnit -Name "$($OUname)" -Path "DC=thematrix,DC=local,OU=ServiceAccounts"
         Write-Host "✅ OU $OUname werd aangemaakt!"
     }
+    $groups = Import-Csv -Path "C:\DC\Groups.csv" -Delimiter ";"
+    foreach ($group in $groups){
+        New-ADGroup -Name "$($group.GroupName)" -SamAccountName "$($group.SamGroupName)" -GroupCategory "$($group.GroupCategory)" -GroupScope "$($group.GroupScope)" -DisplayName "$($group.DisplayName)" -Path "$($group.Path)" -Description "$($group.Description)"
+        Write-Host "✅ Group $($group.GroupName) werd aangemaakt!"
+    }
+
+
 
     $users = Import-Csv -Path "C:\DC\Users.csv" -Delimiter ";"
     foreach($user in $users){
@@ -277,6 +284,7 @@ if (Should-Run-Step "D")
         New-ADUser -Name "$first $last" -GivenName $first -Surname $last -SamAccountName $username -DisplayName $username -UserPrincipalName $userPrincipalName -ProfilePath $profilepath -HomeDirectory $homepath -HomeDrive H: -Path $path -Accountpassword (ConvertTo-SecureString "Letmein123" -AsPlainText -Force) -Enabled $true
         Write-Host "✅ User $first $last werd aangemaakt!"
     }
+
     
 }
 

@@ -1,6 +1,12 @@
-# Script Voor de configuratie van de SQL server
 
 
+# Script Host 
+
+######################
+
+# IP address obtained from DHCP
+
+#####################
 
 ######################
 
@@ -9,7 +15,7 @@
 #####################
 $dnsServers = @("192.168.22.5","192.168.22.9")
 
-[ipaddress]$ip = "192.168.22.3"
+[ipaddress]$ip = "192.168.22.2"
 [ipaddress]$defaultGateway = "192.168.22.1"
 [int]$prefix = 24
 [string]$interfaceName = "Ethernet"
@@ -19,9 +25,6 @@ $joinCred = New-Object pscredential -ArgumentList ([pscustomobject]@{
     UserName = $null
     Password = (ConvertTo-SecureString -String 'P@ssw0rd' -AsPlainText -Force)[0]
 })
-
-[string]$SQLSVCPASSWORD = "P@ssw0rd"
-[string]$SQLSYSADMINACCOUNTS = "WS2-2223-victor\Administrator"
 #######################
 
 # Restart vars 
@@ -34,7 +37,7 @@ $global:startingStep = $Step
 $global:restartKey = "Restart-And-Resume"
 $global:RegRunKey ="HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
 $global:powershell = (Join-Path $env:windir "system32\WindowsPowerShell\v1.0\powershell.exe")
-[string]$registryPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
+[string]$regPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
 
 
 ######################
@@ -108,7 +111,8 @@ function Restart-And-Resume([string] $script, [string] $step)
 Clear-Any-Restart
 
 if (Should-Run-Step "A") 
-{   
+{
+    
     New-NetIPAddress -InterfaceAlias "Ethernet" -IPAddress $ip -AddressFamily IPv4 -PrefixLength $prefix -DefaultGateway $defaultGateway 
 	Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses $dnsServers
     Add-Computer -Domain $domain -Credential $joinCred  -WarningAction SilentlyContinue 
@@ -129,34 +133,21 @@ if (Should-Run-Step "A")
     Set-ItemProperty $registryPath "DefaultUsername" -Value "Administrator@WS2-2223-victor.hogent" -type String 
     Set-ItemProperty $registryPath "DefaultPassword" -Value "P@ssw0rd" -type String
 
+
+    Add-Computer -Domain "ws2-2223-Victor.hogent" -Credential $joinCred  -WarningAction SilentlyContinue 
+
+
 	Restart-And-Resume $script "B"
 
 }
 if (Should-Run-Step "B") 
 {
+	New-SmbShare -Name "IIS-Folder" -Path "C:\IIS-Folder\" -FullAccess "WS2-2223-Victor\Administrators"
 
-	Mount-DiskImage -ImagePath "C:\SQL_Server\en_sql_server_2019_standard_x64_dvd_814b57aa.iso"
-    $Drive = Get-Volume -FileSystemLabel "*sql*" 
-    $DriveLetter = $Drive.DriveLetter
-    Set-Location  -Path "$($DriveLetter):\"
-
-    .\setup.exe /qs /ACTION=Install /FEATURES=SQLEngine /INSTANCENAME=MSSQLSERVER /SQLSVCACCOUNT="NT SERVICE\MSSQLSERVER" /SQLSVCPASSWORD=$SQLSVCPASSWORD /SQLSYSADMINACCOUNTS=$SQLSYSADMINACCOUNTS /AGTSVCACCOUNT="NT AUTHORITY\Network Service" /TCPENABLED=1 /IACCEPTSQLSERVERLICENSETERMS /SUPPRESSPRIVACYSTATEMENTNOTICE
-    Restart-And-Resume $script "C"
+	Install-WindowsFeature -name Web-Server 
+    #install service
 }
 
-if (Should-Run-Step "C") 
-{
-    #Db importeren
 
-    #sql instance
-    Import-Module SQLPS
-	$Tcp = new-object ('Microsoft.SqlServer.Management.Smo.' + 'Wmi.ManagedComputer').GetSmoObject("ManagedComputer[@Name='" + (get-item env:\computername).Value + "']/ServerInstance[@Name='MSSQLSERVER']/ServerProtocol[@Name='Tcp']")
-    $Tcp.IsEnabled = $true
-	$Tcp.Alter()
-	$Tcp
 
-    #firewall 
-    New-NetFirewallRule -DisplayName "SQLServer default instance" -Direction Inbound -LocalPort 1433 -Protocol TCP -Action Allow 
-	New-NetFirewallRule -DisplayName "SQLServer Browser service" -Direction Inbound -LocalPort 1434 -Protocol UDP -Action Allow 
 
-}

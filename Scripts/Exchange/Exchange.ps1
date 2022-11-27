@@ -1,4 +1,4 @@
-# Script Voor de configuratie van de SQL server
+# Script Voor de configuratie van de Exchange server
 
 
 
@@ -7,9 +7,9 @@
 # Vars
 
 #####################
-$dnsServers = @("192.168.22.5","192.168.22.9")
+$dnsServers = @("192.168.22.1","192.168.22.3")
 
-[ipaddress]$ip = "192.168.22.3"
+[ipaddress]$ip = "192.168.22.4"
 [ipaddress]$defaultGateway = "192.168.22.1"
 [int]$prefix = 24
 [string]$interfaceName = "Ethernet"
@@ -19,9 +19,6 @@ $joinCred = New-Object pscredential -ArgumentList ([pscustomobject]@{
     UserName = $null
     Password = (ConvertTo-SecureString -String 'P@ssw0rd' -AsPlainText -Force)[0]
 })
-
-[string]$SQLSVCPASSWORD = "P@ssw0rd"
-[string]$SQLSYSADMINACCOUNTS = "WS2-2223-victor\Administrator"
 #######################
 
 # Restart vars 
@@ -109,21 +106,11 @@ Clear-Any-Restart
 
 if (Should-Run-Step "A") 
 {   
-    New-NetIPAddress -InterfaceAlias "Ethernet" -IPAddress $ip -AddressFamily IPv4 -PrefixLength $prefix -DefaultGateway $defaultGateway 
-	Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses $dnsServers
-    Add-Computer -Domain $domain -Credential $joinCred  -WarningAction SilentlyContinue 
-
-
-    #Firewall and remote management
-
-    Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -name "fDenyTSConnections" -value 0
-	Enable-NetFirewallRule -DisplayGroup "Remote Desktop" | Out-File $logFile -Append
-
-    Set-NetFirewallRule -DisplayGroup "Remote Event Log Management" -Enabled True 
-    Set-NetFirewallRule -DisplayGroup "Remote Volume Management" -Enabled True 
-    Set-NetFirewallRule -DisplayGroup "Remote Service Management" -Enabled True 
-    Set-NetFirewallRule -DisplayGroup "Remote Scheduled Tasks Management" -Enabled True 
-    Set-NetFirewallRule -DisplayName 'Windows Management Instrumentation (DCOM-In)' -Enabled True
+    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+    choco install urlrewrite --version 2.1.20190828 -y
+    choco install vcredist2013 --version 12.0.40660.20180427 -y
+    choco install vcredist2012 --version 11.0.61031.20220311 -y
+    choco install dotnetfx --version 4.8.0.20220524 -y
     
     Set-ItemProperty $registryPath "AutoAdminLogon" -Value "1" -type String 
     Set-ItemProperty $registryPath "DefaultUsername" -Value "Administrator@WS2-2223-victor.hogent" -type String 
@@ -135,28 +122,33 @@ if (Should-Run-Step "A")
 if (Should-Run-Step "B") 
 {
 
-	Mount-DiskImage -ImagePath "C:\SQL_Server\en_sql_server_2019_standard_x64_dvd_814b57aa.iso"
-    $Drive = Get-Volume -FileSystemLabel "*sql*" 
+	Mount-DiskImage -ImagePath "C:\Exchange\mul_exchange_server_2019_cumulative_update_12_x64_dvd_52bf3153.iso"
+    $Drive = Get-Volume -FileSystemLabel "exchange*" 
     $DriveLetter = $Drive.DriveLetter
-    Set-Location  -Path "$($DriveLetter):\"
+    Set-Location  -Path "$($DriveLetter):\UCMARedist\"
 
-    .\setup.exe /qs /ACTION=Install /FEATURES=SQLEngine /INSTANCENAME=MSSQLSERVER /SQLSVCACCOUNT="NT SERVICE\MSSQLSERVER" /SQLSVCPASSWORD=$SQLSVCPASSWORD /SQLSYSADMINACCOUNTS=$SQLSYSADMINACCOUNTS /AGTSVCACCOUNT="NT AUTHORITY\Network Service" /TCPENABLED=1 /IACCEPTSQLSERVERLICENSETERMS /SUPPRESSPRIVACYSTATEMENTNOTICE
+    
+    .\setup.exe
+
+
     Restart-And-Resume $script "C"
+
+    
 }
 
 if (Should-Run-Step "C") 
 {
-    #Db importeren
+    Mount-DiskImage -ImagePath "C:\Exchange\mul_exchange_server_2019_cumulative_update_12_x64_dvd_52bf3153.iso"
+    $Drive = Get-Volume -FileSystemLabel "exchange*" 
+    $DriveLetter = $Drive.DriveLetter
+    Set-Location  -Path "$($DriveLetter):\"
 
-    #sql instance
-    Import-Module SQLPS
-	$Tcp = new-object ('Microsoft.SqlServer.Management.Smo.' + 'Wmi.ManagedComputer').GetSmoObject("ManagedComputer[@Name='" + (get-item env:\computername).Value + "']/ServerInstance[@Name='MSSQLSERVER']/ServerProtocol[@Name='Tcp']")
-    $Tcp.IsEnabled = $true
-	$Tcp.Alter()
-	$Tcp
+    .\setup.exe /IAcceptExchangeServerLicenseTerms_DiagnosticDataOFF /PrepareSchama
 
-    #firewall 
-    New-NetFirewallRule -DisplayName "SQLServer default instance" -Direction Inbound -LocalPort 1433 -Protocol TCP -Action Allow 
-	New-NetFirewallRule -DisplayName "SQLServer Browser service" -Direction Inbound -LocalPort 1434 -Protocol UDP -Action Allow 
+    .\setup.exe /IAcceptExchangeServerLicenseTerms_DiagnosticDataOFF /PrepareAD
+
+    .\setup.exe /IAcceptExchangeServerLicenseTerms_DiagnosticDataOFF /PrepareAllDomains 
+
+    .\setup.exe /IAcceptExchangeServerLicenseTerms_DiagnosticDataOFF /mode:Install /Role:Mailbox /InstallWindowsComponents
 
 }

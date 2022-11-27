@@ -373,43 +373,98 @@ code {
 <tr>
 <th></th>
 <th>IP-Adressen</th>
+<th>Fully Quantified Domain name</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>DC</td>
 <td>192.168.22.1</td>
+<td>dc.ws2-2223-victor.hogent</td>
 </tr>
 <tr>
 <td>IIS</td>
 <td>192.168.22.2</td>
+<td>www.ws2-2223-victor.hogent</td>
 </tr>
 <tr>
 <td>SQL</td>
 <td>192.168.22.3</td>
+<td>sql.ws2-2223-victor.hogent</td>
 </tr>
 <tr>
 <td>Exchange</td>
 <td>192.168.22.4</td>
+<td>mail.ws2-2223-victor.hogent</td>
 </tr>
 <tr>
-<td>Client</td>
+<td>Host / Client</td>
 <td>DHCP</td>
+<td>/</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Vcpu</th>
+<th>Vram</th>
+<th>Vdisksize*</th>
+<th>Network kaarten</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DC</td>
+<td>2</td>
+<td>2 gigabyte</td>
+<td>30 gigabyte</td>
+<td>2 (nat, Internal network)</td>
+</tr>
+<tr>
+<td>IIS</td>
+<td>1</td>
+<td>1 gigabyte</td>
+<td>25 gigabyte</td>
+<td>1 (Internal network)</td>
+</tr>
+<tr>
+<td>SQL</td>
+<td>1</td>
+<td>2 gigabyte</td>
+<td>25 gigabyte</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Exchange</td>
+<td>4</td>
+<td>8 gigabyte</td>
+<td>65 gigabyte</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Host / Client</td>
+<td>2</td>
+<td>2 gigabyte</td>
+<td>25 gigabyte</td>
+<td>1</td>
 </tr>
 </tbody>
 </table>
 <figure>
-<img src="Portfolio\IMG\Screenshot 2022-10-12 153105.png" alt="Screenshot 2022-10-12 153105" style="width:100%" />
+<img src="Portfolio\IMG\Screenshot 2022-10-12 153105.png" alt="Screenshot 2022-10-12 153105" style="width:100%" style="height:90%" />
 <figcaption align = "center"><b>Fig.1 - Grafische weergave van de opstelling van de servers</b></figcaption>
 </figure>
+<p>*Dynamicly allocated ( Neemt enkel de plaats in dat de schijf nodig heeft op host machine )</p>
 <h2 id="domeincontroller-server">DomeinController-Server</h2>
 <p>Op de domeincontroller server met een gui zullen volgende services draaien:</p>
 <ul>
-<li>AD DS</li>
-<li>DNS</li>
-<li>DHCP</li>
-<li>CA</li>
-<li>Router role met NAT</li>
+<li>AD DS (Active Directory Domain Services)</li>
+<li>DNS  (Domain Name Server)</li>
+<li>DHCP (Dynamic Host Configuration Protocol Server)</li>
+<li>CA   (Certificate Authority Server)</li>
+<li>Router role met NAT  (Network Address Translation)</li>
 </ul>
 <p>De server zal beschikken over 2 cores met 4gb ram en de windows server 2019 64 bit operating systeem zal er op geinstalleerd zijn met de desktop expierence (dus met een grafische interface). De server zal ook beschikken over een 35gb virtuele harde schijf bevatten. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De complete domeinnaam van deze server zal <code>dc.ws2-2223-victor.hogent</code> zijn.
 De server heeft ook 2 network interface's:</p>
@@ -510,9 +565,27 @@ De SYSVOL is een gedeelde map waarin de serverkopie van de openbare bestanden va
 <p>De Routing and remote access role zal ook geinstalleerd zijn op deze server. Deze zal de internet voorzien voor de hele omgeving. Het zal van de NAT adapter die aan de DC hangt network address translation doen met het internal network. Zo zullen alle server's die enkel een internal network adapter hebben ook voorzien zijn van een veilige verbinding met het internet. Er wordt aan Network address translation gedaan tussen de 2 interfaces.</p>
 <figure>
 <img src="Portfolio\IMG\NAT.png" alt="Trulli" style="width:100%">
-<figcaption align = "center"><b>Fig.16 - Certificate Authority WebClient</b></figcaption>
+<figcaption align = "center"><b>Fig.17 - Routing and remote Acces Nat verbinding</b></figcaption>
 </figure>
 <h2 id="sql-server">SQL-Server</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Rollen</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>MS SQL server</td>
+</tr>
+<tr>
+<td></td>
+<td>Secundaire DNS</td>
+</tr>
+</tbody>
+</table>
 <p>De SQL-Server zal enkel een command line interface hebben. Deze zal beschikken over 1 cores met 4gb ram en de windows server 2019 64 bit operating systeem zal er op geinstalleerd zijn. De server zal ook beschikken over een 15gb virtuele harde schijf bevatten. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De complete domeinnaam van deze server zal <code>SQL.ws2-2223-victor.hogent</code> zijn.</p>
 <p>Op deze server zal enkel de SQL server draaien. De installatie is te vinden op de Website van Microsoft. Deze wordt gescheiden van andere roles zodat mensen met toegang tot deze server enkel deze server kunnen beheren zonder impact te hebben op andere services.</p>
 <p>Er zal een database aangemaakt worden met de naam <code>WS2-2223-Victor</code>. Deze zal een aparte service account hebben. Deze service account zal enkel de nodige rechten hebben om de database te kunnen beheren. De database zal ook een aparte gebruiker hebben die enkel de nodige rechten heeft om de database te kunnen gebruiken.</p>
@@ -527,17 +600,58 @@ De SYSVOL is een gedeelde map waarin de serverkopie van de openbare bestanden va
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center"><img src="Portfolio\IMG\SecondaryForward.png" alt="Trulli" style="width:100%" /><figcaption align = "center"><b>Fig.10 - Secondary DNS Server Forward Lookup zone</b></figcaption></td>
-<td style="text-align:center"><img src="Portfolio\IMG\SecondaryReverse.png" alt="Trulli" style="width:100%" /><figcaption align = "center"><b>Fig.11 - Secondary DNS Server reverse Lookup zone</b></figcaption></td>
+<td style="text-align:center"><img src="Portfolio\IMG\SecondaryForward.png" alt="Trulli" style="width:100%" /><figcaption align = "center"><b>Fig.17 - Secondary DNS Server Forward Lookup zone</b></figcaption></td>
+<td style="text-align:center"><img src="Portfolio\IMG\SecondaryReverse.png" alt="Trulli" style="width:100%" /><figcaption align = "center"><b>Fig.18 - Secondary DNS Server reverse Lookup zone</b></figcaption></td>
 </tr>
 </tbody>
 </table>
 <p>Als u een secundaire server toevoegt, is een ontwerpoptie om de server zo dicht mogelijk bij clients te plaatsen die veel behoefte hebben aan hostnaamomzetting. U kunt ook overwegen om secundaire servers op externe subnetten te plaatsen die zijn verbonden via langzamere of onbetrouwbare WAN-koppelingen.</p>
 <h2 id="exchange-server">Exchange-Server</h2>
-<p>De Exchange-Server zal enkel een command line interface hebben. Deze zal beschikken over 4 cores met 10gb ram en de windows server 2019 64 bit operating systeem zal er op geinstalleerd zijn. De server zal ook beschikken over een 45gb virtuele harde schijf bevatten. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De complete domeinnaam van deze server zal <code>exchange.ws2-2223-victor.hogent</code> zijn.</p>
-<p>Aan de hand van de verkregen ISO van exchange zal de mailserver geinstalleerd worden. Deze zal een aparte service account hebben. Deze service account zal enkel de nodige rechten hebben om de mailserver te kunnen beheren. De mailserver zal ook een aparte gebruiker hebben die enkel de nodige rechten heeft om de mailserver te kunnen gebruiken.</p>
-<p>Het zou moeten mogelijk zijn om de management webpagina van de mailserver te kunnen bezoeken via de browser op de domeincontroller die wel beschikt over een gui. De webpagina zal enkel toegankelijk zijn voor de gebruikers die toegang hebben tot de mailserver.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Rollen</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>MS Exchange Server</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>De Exchange-Server zal enkel een command line interface hebben. Deze zal beschikken over 4 cores met 10gb ram en de windows server 2019 64 bit operating systeem zal er op geinstalleerd zijn. De server zal ook beschikken over een 45gb virtuele harde schijf bevatten. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De complete domeinnaam van deze server zal <code>exchange.ws2-2223-victor.hogent</code> of <code>mail.ws2-2223-victor.hogent</code> zijn.</p>
+<figure>
+<img src="Portfolio\IMG\outlook.png" alt="Trulli" style="width:100%">
+<figcaption align = "center"><b>Fig.19 - Outlook WebClient</b></figcaption>
+</figure>
+<p>Aan de hand van de verkregen ISO van exchange zal de mailserver geinstalleerd worden. Dit met een domain admin account die de rechten heeft van <code>Schema Admin</code> en <code>Enterprise Admin</code>. Deze Server zal een aparte service account hebben. Dit service account zal enkel de nodige rechten hebben om de mailserver te kunnen beheren. Alle gebruikers krijgen een mailbox die gemaakt zal worden door de mailserver admin via het <code>Admin Center</code>. Dit is te bereiken via de browser via <code>https://mail.ws2-2223-victor.hogent/ecp/</code>.</p>
+<p>Het zou moeten mogelijk zijn om de management webpagina van de mailserver te kunnen bezoeken via de browser op de domeincontroller die wel beschikt over een gui. Iedereen die een mailbox heeft kan inloggen op de mail client. Enkel de Admin's en de server admin van de Exchange server kunnen inloggen op de exchange server via de ECP management webpagina.</p>
+<p>Certificaten voor de mailserver moeten nog inorde gebracht worden met de CA server...</p>
 <h2 id="iis-server">IIS-Server</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Rollen</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>IIS Server (Webserver role)</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <p>De IIS Server met andere woorden de webserver van de organisatie zal enkel een command line interface hebben. Deze zal beschikken over 1 cores met 2gb ram. De server zal ook beschikken over een 15gb virtuele harde schijf bevatten. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De complete domeinnaam van deze server zal <code>web.ws2-2223-victor.hogent</code> ,<code>www.ws2-2223-victor.hogent</code> of gwn <code>ws2-2223-victor.hogent</code> zijn. Mijn portfolio wordt afgebeeld op de site als demo.</p>
 <figure>
 <img src="Portfolio\IMG\link1.png" alt="Trulli" style="width:100%">
@@ -549,6 +663,24 @@ De SYSVOL is een gedeelde map waarin de serverkopie van de openbare bestanden va
 <p>Certificaat moet nog inorde gebracht worden met de CA Server...</p>
 <p>De website van het domein zal bereikbaar zijn over heel het internal network maar enkel met https. De IIS role staat op een aparte server omdat alle users kunnen verbinden met deze server. Om het risico's op problemen door aanvallen of inbraak op de website te verminderen zal de IIS service op een aparte server geinstalleerd staan.</p>
 <h2 id="client">Client</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Geinstalleerde Software</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>Chrome browser</td>
+</tr>
+<tr>
+<td></td>
+<td>SQL Server Management Studio</td>
+</tr>
+</tbody>
+</table>
 <p>De client zal een gewone installatie van windows 10 zijn die een user heeft in het domein waarmee hij kan inloggen. De client zal ook een virtuele harde schijf hebben van 45gb. Deze is dynamisch gealloceerd zodat hij enkel de nodige ruimte inneemt op je host machine. De Client krijgt een ip address van de DHCP server.</p>
 <p>Google chrome en SQL server management studio worden geinstalleerd op de server. Deze zijn nodig om de website te kunnen bezoeken en de database te kunnen beheren. Ook is er een browser nodig om mails te versturen met de online mail client.</p>
 <figure>

@@ -1,1 +1,0 @@
-New-SmbShare -Name "IIS-Folder" -Path "C:\IIS-Folder\" -FullAccess "WS2-2223-Victor\Administrators"
