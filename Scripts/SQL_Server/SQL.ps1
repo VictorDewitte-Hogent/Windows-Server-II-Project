@@ -148,13 +148,7 @@ if (Should-Run-Step "C")
 {
     #Db importeren
 
-    #sql instance
-    Import-Module SQLPS
-	$Tcp = new-object ('Microsoft.SqlServer.Management.Smo.' + 'Wmi.ManagedComputer').GetSmoObject("ManagedComputer[@Name='" + (get-item env:\computername).Value + "']/ServerInstance[@Name='MSSQLSERVER']/ServerProtocol[@Name='Tcp']")
-    $Tcp.IsEnabled = $true
-	$Tcp.Alter()
-	$Tcp
-
+    
     #firewall 
     New-NetFirewallRule -DisplayName "SQLServer default instance" -Direction Inbound -LocalPort 1433 -Protocol TCP -Action Allow 
 	New-NetFirewallRule -DisplayName "SQLServer Browser service" -Direction Inbound -LocalPort 1434 -Protocol UDP -Action Allow 

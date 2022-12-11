@@ -106,6 +106,12 @@ Clear-Any-Restart
 
 if (Should-Run-Step "A") 
 {   
+
+
+    #Domain JOINEN
+    Add-Computer -Domain $domain -Credential $joinCred  -WarningAction SilentlyContinue
+
+
     Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
     choco install urlrewrite --version 2.1.20190828 -y
     choco install vcredist2013 --version 12.0.40660.20180427 -y

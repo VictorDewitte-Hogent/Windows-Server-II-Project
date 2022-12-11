@@ -15,10 +15,10 @@ $username = "Administrator"
 
 # Zet hier het pad naar waar u de Shared Folder heeft opgeslagen
 [String]$sharedFolder = "C:\Users\VictorDewitte\Documents\SharedFolder"             
-[string]$logs = "C:\Users\VictorDewitte\Desktop\WindowsServer2\logfile.txt"
 
 
 
+# Plaats hier het pad naar de scripts folder van het Windows Server II Project
 [string]$scripts = "C:\Users\VictorDewitte\Desktop\WindowsServer2\Windows-Server-II-Project\Scripts\"
 #############################
 
@@ -35,12 +35,12 @@ $username = "Administrator"
  function Create-all-VM
  {
 
-    Create-Vm -Name "DC" -Mem 4096 -Cpu 2 -Hdd 25000 -Gui $true
-    Create-Vm -Name "SQL" -Mem 4096 -Cpu 1 -Hdd 25000 -Gui $false
-    Create-Vm -Name "Exchange" -Mem 10240 -Cpu 4 -Hdd 30000 -Gui $false
-    Create-Vm -Name "IIS" -Mem 2048 -Cpu 1 -Hdd 8000 -Gui $false
+    Create-Vm -Name "DC1" -Mem 4096 -Cpu 2 -Hdd 25000 -Gui $true
+    Create-Vm -Name "SQL1" -Mem 4096 -Cpu 1 -Hdd 25000 -Gui $false
+    Create-Vm -Name "Exchange1" -Mem 10240 -Cpu 4 -Hdd 40000 -Gui $false
+    Create-Vm -Name "IIS1" -Mem 2048 -Cpu 1 -Hdd 8000 -Gui $false
     #create-Vm -Name "Management" -Mem 4096 -Cpu 2 -Hdd 80000 -Gui $true
-    Create-Vm -Name "Host" -Mem 4096 -Cpu 2 -Hdd 80000 -Gui $true
+    Create-Vm -Name "Host1" -Mem 4096 -Cpu 2 -Hdd 80000 -Gui $true
 
  }
 
@@ -48,7 +48,7 @@ $username = "Administrator"
 function Create-VM
 {
     param(
-        [string]$Name = 'DC',
+        [string]$Name = 'DC1',
         [int]$Mem = 4096,
         [int]$Cpu = 2,
         [int]$Hdd = 25000,
@@ -62,24 +62,21 @@ function Create-VM
 
     try{
         #VBoxManage createvm --name "Test"--ostype "Windows2019"  --basefolder "E:\VM's\Test\" --group TestGroup --register
-        if($name -match "Host"){
+        if($name -match "Host1"){
             $ostype = "Windows10_64"
         }
         else{
             $ostype = "Windows2019_64"
         }
-        VBoxManage createvm --name "$Name"--ostype "$ostype"  --basefolder "$path1" --groups $Group --register | out-file $logs -append
-
-        VBoxManage createhd --filename "$path1$Group\$Name\$Name.vdi" --size $Hdd | out-file $logs -append
-        VBoxManage storagectl $Name --name "SATA Controller" --add sata --controller IntelAhci | out-file $logs -append
-        VBoxManage storageattach $Name --storagectl "SATA Controller" --port 0 --device 0 --type hdd --medium "$path1$Group\$Name\$Name.vdi" | out-file $logs -append
-
-        VBoxManage sharedfolder add $Name --name shr --hostpath $sharedFolder --automount | out-file $logs -append
-   
-        if($name -match "DC"){
-            VBoxManage modifyvm $Name --memory $Mem --vram 128 --cpus $Cpu --nic1 nat --nic2 intnet --audio none --boot1 disk --boot2 dvd --boot3 none --boot4 none | out-file $logs -append }
+        VBoxManage createvm --name "$Name"--ostype "$ostype"  --basefolder "$path1" --groups $Group --register 
+        VBoxManage createhd --filename "$path1$Group\$Name\$Name.vdi" --size $Hdd         
+        VBoxManage storagectl $Name --name "SATA Controller" --add sata --controller IntelAhci         
+        VBoxManage storageattach $Name --storagectl "SATA Controller" --port 0 --device 0 --type hdd --medium "$path1$Group\$Name\$Name.vdi" 
+        VBoxManage sharedfolder add $Name --name shr --hostpath $sharedFolder --automount    
+        if($name -match "DC1"){
+            VBoxManage modifyvm $Name --memory $Mem --vram 128 --cpus $Cpu --nic1 nat --nic2 intnet --audio none --boot1 disk --boot2 dvd --boot3 none --boot4 none  }
         else{
-            VBoxManage modifyvm $Name --memory $Mem --vram 128 --cpus $Cpu --nic1 intnet --audio none --boot1 disk --boot2 dvd --boot3 none --boot4 none | out-file $logs -append}
+            VBoxManage modifyvm $Name --memory $Mem --vram 128 --cpus $Cpu --nic1 intnet --audio none --boot1 disk --boot2 dvd --boot3 none --boot4 none }
         }
        
 
@@ -91,23 +88,23 @@ function Create-VM
 
 #Kan dit efficiënter maken maar nog nie direct zin in
 function Install-DC1 {
-    VBoxManage unattended install "DC" --iso "$PathISO" --user "Administrator" --password $password --full-user-name $username  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions  --image-index=2 --start-vm=gui --post-install-command=$postCommand
+    VBoxManage unattended install "DC1" --iso "$PathISO" --user "Administrator" --password $password --full-user-name $username  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions  --image-index=2 --start-vm=gui --post-install-command=$postCommand
     #--post-install-command "powershell -ExecutionPolicy Bypass -File C:\Users\Administrator\Desktop\Scripts\DC1.ps1" 
 }
 function Install-SQL {
-    VBoxManage unattended install "SQL" --iso "$PathISO" --user $username --password $password --full-user-name $username  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=headless --post-install-command=$postCommand
+    VBoxManage unattended install "SQL1" --iso "$PathISO" --user $username --password $password --full-user-name $username  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=headless --post-install-command=$postCommand
 }
 function Install-Exchange {
-    VBoxManage unattended install "Exchange" --iso "$PathISO" --user $username --password $password --full-user-name $username  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=headless  --post-install-command=$postCommand 
+    VBoxManage unattended install "Exchange1" --iso "$PathISO" --user $username --password $password --full-user-name $username  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=headless  --post-install-command=$postCommand 
 }
 function Install-IIS {
-    VBoxManage unattended install "IIS" --iso "$PathISO" --user $username --password $password --full-user-name $username  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=headless --post-install-command=$postCommand
+    VBoxManage unattended install "IIS1" --iso "$PathISO" --user $username --password $password --full-user-name $username  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=headless --post-install-command=$postCommand
 }
 #function Install-Management {
    # VBoxManage unattended install "Management" --iso "$PathISO" --user $username --password $password --full-user-name $username  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=2 --start-vm=gui
 #}
 function Install-Host {
-    VBoxManage unattended install "Host" --iso "$PathISO2" --user $username --password $password --full-user-name $username  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=gui --post-install-command=$postCommand
+    VBoxManage unattended install "Host1" --iso "$PathISO2" --user $username --password $password --full-user-name $username  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=gui --post-install-command=$postCommand
 }
 
 ########################################
@@ -131,13 +128,13 @@ function Scripts {
 }
 
 
-function GPO-Scripts {
-    param (
+# function GPO-Scripts {
+#     param (
         
-    )
-    VBoxManage guestcontrol "DC" run --username  --password $password --exe "C:\\windows\\system32\\WindowsPowerShell\v1.0\powershell.exe" -- powershell.exe /C $gpoScript
-    VBoxManage guestcontrol "DC" run --username $username --password $password --exe "C:\\windows\\system32\\WindowsPowerShell\v1.0\powershell.exe" -- powershell.exe /C $gpoScript
-}
+#     )
+#     VBoxManage guestcontrol "DC1" run --username  --password $password --exe "C:\\windows\\system32\\WindowsPowerShell\v1.0\powershell.exe" -- powershell.exe /C $gpoScript
+#     VBoxManage guestcontrol "DC1" run --username $username --password $password --exe "C:\\windows\\system32\\WindowsPowerShell\v1.0\powershell.exe" -- powershell.exe /C $gpoScript
+# }
 
 
 function Show-Menu
@@ -186,7 +183,7 @@ function Show-Menu
 ######################'
             Start-Sleep -Seconds 5
             Install-DC1
-            #Show-Menu
+            Show-Menu
         } '3' {
             '####################
 
@@ -239,7 +236,7 @@ function Show-Menu
 
 ######################'
             Start-Sleep -Seconds 5
-            Scripts -name "DC" -scripts "$Scripts" -CompDir "C:\"
+            Scripts -name "DC1" -scripts "$Scripts" -CompDir "C:\"
             Show-Menu
         } '8' {
             '####################
@@ -248,7 +245,7 @@ function Show-Menu
 
 ######################'
             Start-Sleep -Seconds 5
-            Scripts -name "SQL" -scripts "$Scripts" -CompDir "C:\"
+            Scripts -name "SQL1" -scripts "$Scripts" -CompDir "C:\"
             Show-Menu
         } '9' {
             '####################
@@ -258,7 +255,7 @@ function Show-Menu
 ######################'
             Start-Sleep -Seconds 5
             GPO-Scripts 
-            Scripts -name "Exchange" -scripts "$Scripts" -CompDir "C:\"
+            Scripts -name "Exchange1" -scripts "$Scripts" -CompDir "C:\"
             Show-Menu
         } '10' {
             '####################
@@ -276,7 +273,7 @@ function Show-Menu
 
 ######################'
             Start-Sleep -Seconds 5
-            Scripts -name "Host" -scripts "$Scripts" -CompDir "C:\"
+            Scripts -name "Host1" -scripts "$Scripts" -CompDir "C:\"
            
         } '12' {
             '####################
@@ -285,15 +282,14 @@ function Show-Menu
 
 ######################'
             Start-Sleep -Seconds 5
-            Stop-VM -Name "DC" -TurnOff
-            Stop-VM -Name "SQL" -TurnOff
-            Stop-VM -Name "Exchange" -TurnOff
-            Stop-VM -Name "IIS" -TurnOff
+            Stop-VM -Name "DC1" -TurnOff
+            Stop-VM -Name "SQL1" -TurnOff
+            Stop-VM -Name "Exchange1" -TurnOff
+            Stop-VM -Name "IIS1" -TurnOff
             #Stop-VM -Name "Management" -TurnOff
-            Stop-VM -Name "Host" -TurnOff
+            Stop-VM -Name "Host1" -TurnOff
             Show-Menu
-            VBoxManage controlvm $name poweroff | Out-File $logFile -Append  
-        
+            #VBoxManage controlvm $name poweroff 
         
         } 'q' {
             return
