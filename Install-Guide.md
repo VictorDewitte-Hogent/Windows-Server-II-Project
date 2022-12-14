@@ -60,6 +60,8 @@ Q zal het script afsluiten.
 
 1-12 zal de volgende acties uitvoeren:
 - 1: Zal alle vm's aanmaken in VirtualBox. Deze worden ook geconfigureerd met de juiste instellingen.
+
+
 ![VboxMachinesExist](Portfolio\IMG\VboxMachinesExist.png)
 - 2: Zal de Windows Server 2019 installeren op de VM `DC1`. Deze zal ook opstarten met een GUI.
 - 3-5: Zal windows Server 2019 Core installeren op de VM's `SQL1`, `EX1` en `IIS1`. Deze installaties zullen in de achtergrond gebeuren.
@@ -68,16 +70,41 @@ Q zal het script afsluiten.
 
 ### Vanaf hier kan het zijn dat de scripts niet meer werken. In dat geval kan je de [volgende](###FIX) stappen volgen.
 
+- 7: copiert de bestanden van de folder naar de VM DC en start het instellen van alle nodige instellingen op de DC.
 
+- 8: copiert de bestanden van de folder naar de VM SQL en start het instellen van alle nodige instellingen op de SQL.
 
+- 9: copiert de bestanden van de folder naar de VM EX en start het instellen van alle nodige instellingen op de EX.
 
+- 10: copiert de bestanden van de folder naar de VM IIS en start het instellen van alle nodige instellingen op de IIS.
 
-
-
-
-
+In principe als alle scripts werken zou de omgeving nu moeten compleet zijn.
 
 ### FIX
+
+Indien de scripts via het vboxmanage script niet correct runnen (als het bij dc niet werkt zal het niet werken bij de rest) zal je volgende stappen moeten ondernemen:
+
+- 1: Verwijder de dc vm
+
+- 2: Herstart het script `VboxManageScript` en kies voor optie 1
+
+- 3: Kies dan optie 2 om de dc opnieuw te installeren
+
+- 4: Dan moet je deze command runnen om de scirpts te copieren naar de dc
+
+```ps1
+
+vboxmanage guestcontrol $name copyto $scripts $CompDir --username $username --password $password
+#als je dit in het zelfde venster van het vboxmanage script zijn de vars nog gesaved
+#indien niet zo run vboxmanagescript en press q   
+```
+![VboxMachinesExist](Portfolio\IMG\IncaseOfEmergency.png)
+
+- 5: Dan kan je met ise of notepad de scripts openen.
+
+- 6: Het install stuk van elk script staat in blokken van grote if statements. Elk van deze blokken tot aan `Restart-And-Resume $script "D"` kunnen uitgevoerd worden in een powershell scherm. Tussen elk blok moet de Server gerestart worden.
+
+- 7: Deze paar stappen herhalen zich voor elk van de volgende VM's
 
 
 

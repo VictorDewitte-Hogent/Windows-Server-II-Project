@@ -106,18 +106,26 @@ Clear-Any-Restart
 
 if (Should-Run-Step "A") 
 {   
-
+    New-NetIPAddress -InterfaceAlias "Ethernet" -IPAddress $ip -AddressFamily IPv4 -PrefixLength $prefix -DefaultGateway $defaultGateway 
+	Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses $dnsServers
 
     #Domain JOINEN
     Add-Computer -Domain $domain -Credential $joinCred  -WarningAction SilentlyContinue
-
+     
+    Install-Windows Feature -Name NET-Framework-45-Features, RSAT-ADDS, RPC-over-HTTP-proxy, RSAT-Clustering, RSAT-Clustering-CmdInterface, RSAT-Clustering-PowerShell
 
     Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-    choco install urlrewrite --version 2.1.20190828 -y
+    #choco install urlrewrite --version 2.1.20190828 -y
     choco install vcredist2013 --version 12.0.40660.20180427 -y
     choco install vcredist2012 --version 11.0.61031.20220311 -y
     choco install dotnetfx --version 4.8.0.20220524 -y
     
+    Install-WindowsFeature Server-Media-Foundation
+
+    Invoke-WebRequest -Uri "http://www.microsoft.com/web/handlers/webpi.ashx?command=getinstallerredirect&appid=urlrewrite2" -OutFile "C:\Users\Administrator\Desktop\urlrewrite.exe"
+    Set-Location C:\Users\Administrator\Desktop\
+    .\urlrewrite.exe
+
     Set-ItemProperty $registryPath "AutoAdminLogon" -Value "1" -type String 
     Set-ItemProperty $registryPath "DefaultUsername" -Value "Administrator@WS2-2223-victor.hogent" -type String 
     Set-ItemProperty $registryPath "DefaultPassword" -Value "P@ssw0rd" -type String
@@ -148,10 +156,10 @@ if (Should-Run-Step "C")
     $Drive = Get-Volume -FileSystemLabel "exchange*" 
     $DriveLetter = $Drive.DriveLetter
     Set-Location  -Path "$($DriveLetter):\"
+    Add-WindowsCapability –online –Name Rsat.ActiveDirectory.DS-LDS.Tools~~~~0.0.1.0
+    .\setup.exe /IAcceptExchangeServerLicenseTerms_DiagnosticDataOFF /PrepareSchema
 
-    .\setup.exe /IAcceptExchangeServerLicenseTerms_DiagnosticDataOFF /PrepareSchama
-
-    .\setup.exe /IAcceptExchangeServerLicenseTerms_DiagnosticDataOFF /PrepareAD
+    .\setup.exe /IAcceptExchangeServerLicenseTerms_DiagnosticDataOFF /PrepareAD /OrganizationName:"ws2-2223-victor" 
 
     .\setup.exe /IAcceptExchangeServerLicenseTerms_DiagnosticDataOFF /PrepareAllDomains 
 
