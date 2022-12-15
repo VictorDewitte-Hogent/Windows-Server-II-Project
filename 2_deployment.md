@@ -43,6 +43,8 @@ In de scripts die je zal vinden in de map `Scripts` moet je de paden aanpassen n
 
 
 ```
+De ISO's van sql server en exchange moeten in de zelfde folder komen van de powershell scripts. `{zipfile}/scripts/{sql/ exchange}/{Iso's}`
+
 
 ## Installatie
 

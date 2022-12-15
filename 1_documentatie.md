@@ -211,7 +211,14 @@ Aan de hand van de verkregen ISO van exchange zal de mailserver geinstalleerd wo
 
 Het zou moeten mogelijk zijn om de management webpagina van de mailserver te kunnen bezoeken via de browser op de domeincontroller die wel beschikt over een gui. Iedereen die een mailbox heeft kan inloggen op de mail client. Enkel de Admin's en de server admin van de Exchange server kunnen inloggen op de exchange server via de ECP management webpagina.
 
-Certificaten voor de mailserver moeten nog inorde gebracht worden met de CA server...
+Mials kunnen verzonden worden naar alle gebruikers met een mailbox.
+
+<figure>
+<img src="Portfolio\IMG\MailsVerzonden.png" alt="Trulli" style="width:100%">
+<figcaption align = "center"><b>Fig.20 - Outlook WebClient 2</b></figcaption>
+</figure>
+
+Certificaat om de website moet veilig maken zijn niet gelukt via de CA server.
 
 
 ## IIS-Server
@@ -232,7 +239,8 @@ De IIS Server met andere woorden de webserver van de organisatie zal enkel een c
 <figcaption align = "center"><b>Fig. - Website is bereikbaar via deze links</b></figcaption>
 </figure>
 
-Certificaat moet nog inorde gebracht worden met de CA Server...
+Certificaat om de website moet veilig maken zijn niet gelukt via de CA server. Er is een certificaat aanwezig maar de CA server wordt niet door het domein vertrouwd.
+
 
 
 De website van het domein zal bereikbaar zijn over heel het internal network maar enkel met https. De IIS role staat op een aparte server omdat alle users kunnen verbinden met deze server. Om het risico's op problemen door aanvallen of inbraak op de website te verminderen zal de IIS service op een aparte server geinstalleerd staan.
@@ -262,6 +270,20 @@ Google chrome en SQL server management studio worden geinstalleerd op de server.
 </style>
 
 
+## Status van het project
+
+De meeste zaken van het project zijn meteen gelukt zonder al teveel problemen. 
+
+De CA server was iets volledigs nieuw en heeft toch wel voor problemen gezorgd. Het was niet mogelijk om een certificaat te maken voor de website dat vertrouwd werd door het domein. Dit is een probleem dat ik niet opgelost heb.
 
 
-<!--New-SmbShare -Path C:\Users\Administrator.WS2-2223-VICTOR\Documents\ -Name "Shared Folder2" -FullAccess  "WS2-2223-VICTOR\Victor","WS2-2223-VICTOR\Administrator"
+## Conclusie
+
+Als conclusie kan ik trekken dat ik toch wel veel tijd nodig had voor de CA server en dat ik hier misschien toch beter wat vroeger me had mee bezig gehouden. 
+
+Maar ik ben toch wel tevreden met het resultaat. Het is een mooi project geworden waar ik veel van geleerd heb. Ik heb ook veel nieuwe dingen geleerd zoals de CA server (ook al werkt het niet perfect) en de SQL server op de core versie van een windows server installeren. 
+
+Het werken met core versie van Windows was ook een nieuwe ervaring die wat challenges met zich meebrengt maar dan ook weer leuke oplossingen biedt voor dat probleem.
+
+
+
