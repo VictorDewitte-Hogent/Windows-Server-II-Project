@@ -93,8 +93,8 @@ Indien de scripts via het vboxmanage script niet correct runnen (als het bij dc 
 - 4: Dan moet je deze command runnen om de scirpts te copieren naar de dc
 
 ```ps1
-
-vboxmanage guestcontrol $name copyto $scripts $CompDir --username $username --password $password
+#De naam moet zelf ingevuld worden 
+vboxmanage guestcontrol $name copyto $scripts "C:\" --username $username --password $password
 #als je dit in het zelfde venster van het vboxmanage script zijn de vars nog gesaved
 #indien niet zo run vboxmanagescript en press q   
 ```
@@ -103,6 +103,41 @@ vboxmanage guestcontrol $name copyto $scripts $CompDir --username $username --pa
 - 5: Dan kan je met ise of notepad de scripts openen.
 
 - 6: Het install stuk van elk script staat in blokken van grote if statements. Elk van deze blokken tot aan `Restart-And-Resume $script "D"` kunnen uitgevoerd worden in een powershell scherm. Tussen elk blok moet de Server gerestart worden.
+```ps1
+#Example from Exchange script
+# The parts that are commented out are the parts that are not neccesary when doing the scripts more manually.
+# if (Should-Run-Step "A") 
+# {   
+    New-NetIPAddress -InterfaceAlias "Ethernet" -IPAddress $ip -AddressFamily IPv4 -PrefixLength $prefix -DefaultGateway $defaultGateway 
+	Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses $dnsServers
+
+    #Domain JOINEN
+    Add-Computer -Domain $domain -Credential $joinCred  -WarningAction SilentlyContinue
+     
+    Install-Windows Feature -Name NET-Framework-45-Features, RSAT-ADDS, RPC-over-HTTP-proxy, RSAT-Clustering, RSAT-Clustering-CmdInterface, RSAT-Clustering-PowerShell
+
+    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+    #choco install urlrewrite --version 2.1.20190828 -y
+    choco install vcredist2013 --version 12.0.40660.20180427 -y
+    choco install vcredist2012 --version 11.0.61031.20220311 -y
+    choco install dotnetfx --version 4.8.0.20220524 -y
+    
+    Install-WindowsFeature Server-Media-Foundation
+
+    Invoke-WebRequest -Uri "http://www.microsoft.com/web/handlers/webpi.ashx?command=getinstallerredirect&appid=urlrewrite2" -OutFile "C:\Users\Administrator\Desktop\urlrewrite.exe"
+    Set-Location C:\Users\Administrator\Desktop\
+    .\urlrewrite.exe
+
+    Set-ItemProperty $registryPath "AutoAdminLogon" -Value "1" -type String 
+    Set-ItemProperty $registryPath "DefaultUsername" -Value "Administrator@WS2-2223-victor.hogent" -type String 
+    Set-ItemProperty $registryPath "DefaultPassword" -Value "P@ssw0rd" -type String
+
+# 	Restart-And-Resume $script "B"
+
+# }
+
+```
+
 
 - 7: Deze paar stappen herhalen zich voor elk van de volgende VM's
 

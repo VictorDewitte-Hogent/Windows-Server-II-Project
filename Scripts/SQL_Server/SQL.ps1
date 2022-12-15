@@ -129,11 +129,23 @@ if (Should-Run-Step "A")
     Set-ItemProperty $registryPath "DefaultUsername" -Value "Administrator@WS2-2223-victor.hogent" -type String 
     Set-ItemProperty $registryPath "DefaultPassword" -Value "P@ssw0rd" -type String
 
+
 	Restart-And-Resume $script "B"
 
 }
 if (Should-Run-Step "B") 
 {
+	Install-WindowsFeature -Name DNS -IncludeManagementTools
+	Add-DnsServerSecondaryZone -MasterServers 192.168.22.1 -Name ws2-2223-victor.hogent -ZoneFile ws2-2223-victor.hogent.loc
+	Get-DnsServerZone
+
+	Start-DnsServerZoneTransfer -Name ws2-2223-victor.hogent
+	Get-DnsServerResourceRecord -ZoneName ws2-2223-victor.hogent
+	
+
+
+
+
 
 	Mount-DiskImage -ImagePath "C:\SQL_Server\en_sql_server_2019_standard_x64_dvd_814b57aa.iso"
     $Drive = Get-Volume -FileSystemLabel "*sql*" 
@@ -147,7 +159,7 @@ if (Should-Run-Step "B")
 if (Should-Run-Step "C") 
 {
     #Db importeren
-
+	#manueel
     
     #firewall 
     New-NetFirewallRule -DisplayName "SQLServer default instance" -Direction Inbound -LocalPort 1433 -Protocol TCP -Action Allow 

@@ -160,14 +160,14 @@ if (Should-Run-Step "C")
     Add-DnsServerResourceRecordA -Name iis -ZoneName ws2-2223-victor.hogent -IPv4Address 192.168.22.2
     Add-DnsServerResourceRecordA -Name sql -ZoneName ws2-2223-victor.hogent -IPv4Address 192.168.22.3
     Add-DnsServerResourceRecordA -Name mail -ZoneName ws2-2223-victor.hogent -IPv4Address 192.168.22.4
-
+    Start-dnsServerZonetransfer -ZoneName ws2-2223-victor.hogent 
 
     # Add PTR records
     Add-DnsServerResourceRecordPtr -Name "1" -PtrDomainName "dc.ws2-2223-victor.hogent" -ZoneName "22.168.192.in-addr.arpa" -computerName agentsmith
     Add-DnsServerResourceRecordPtr -Name "2" -PtrDomainName "iis.ws2-2223-victor.hogent" -ZoneName "22.168.192.in-addr.arpa" -computerName agentsmith
     Add-DnsServerResourceRecordPtr -Name "3" -PtrDomainName "sql.ws2-2223-victor.hogent" -ZoneName "22.168.192.in-addr.arpa" -computerName agentsmith
     Add-DnsServerResourceRecordPtr -Name "4" -PtrDomainName "mail.ws2-2223-victor.hogent" -ZoneName "22.168.192.in-addr.arpa" -computerName agentsmith
-
+    Start-dnsServerZonetransfer -ZoneName 22.168.192.in-addr.arpa
 
     # Add CNAME records
     Add-DnsServerResourceRecordCName -ZoneName ws2-2223-victor.hogent -HostNameAlias "iis.ws2-2223-victor.hogent" -Name "www"

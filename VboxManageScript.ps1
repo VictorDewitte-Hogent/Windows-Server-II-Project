@@ -40,7 +40,7 @@ $username = "Administrator"
     Create-Vm -Name "Exchange1" -Mem 10240 -Cpu 4 -Hdd 40000 -Gui $false
     Create-Vm -Name "IIS1" -Mem 2048 -Cpu 1 -Hdd 8000 -Gui $false
     #create-Vm -Name "Management" -Mem 4096 -Cpu 2 -Hdd 80000 -Gui $true
-    Create-Vm -Name "Host1" -Mem 4096 -Cpu 2 -Hdd 80000 -Gui $true
+    Create-Vm -Name "Host" -Mem 4096 -Cpu 2 -Hdd 80000 -Gui $true
 
  }
 
@@ -62,7 +62,7 @@ function Create-VM
 
     try{
         #VBoxManage createvm --name "Test"--ostype "Windows2019"  --basefolder "E:\VM's\Test\" --group TestGroup --register
-        if($name -match "Host1"){
+        if($name -match "Host"){
             $ostype = "Windows10_64"
         }
         else{
@@ -104,7 +104,7 @@ function Install-IIS {
    # VBoxManage unattended install "Management" --iso "$PathISO" --user $username --password $password --full-user-name $username  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=2 --start-vm=gui
 #}
 function Install-Host {
-    VBoxManage unattended install "Host1" --iso "$PathISO2" --user $username --password $password --full-user-name $username  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=gui --post-install-command=$postCommand
+    VBoxManage unattended install "Host" --iso "$PathISO2" --user $username --password $password --full-user-name $username  --locale "nl_BE" --time-zone "Europe/Brussels" --install-additions --image-index=1 --start-vm=gui --post-install-command=$postCommand
 }
 
 ########################################
@@ -273,7 +273,7 @@ function Show-Menu
 
 ######################'
             Start-Sleep -Seconds 5
-            Scripts -name "Host1" -scripts "$Scripts" -CompDir "C:\"
+            Scripts -name "Host" -scripts "$Scripts" -CompDir "C:\"
            
         } '12' {
             '####################
@@ -287,7 +287,7 @@ function Show-Menu
             Stop-VM -Name "Exchange1" -TurnOff
             Stop-VM -Name "IIS1" -TurnOff
             #Stop-VM -Name "Management" -TurnOff
-            Stop-VM -Name "Host1" -TurnOff
+            Stop-VM -Name "Host" -TurnOff
             Show-Menu
             #VBoxManage controlvm $name poweroff 
         
